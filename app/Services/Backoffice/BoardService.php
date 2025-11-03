@@ -70,6 +70,17 @@ class BoardService
      */
     public function createBoard(array $data): Board
     {
+        // slug가 제공된 경우, 소프트 삭제된 동일 slug가 있는지 확인 후 하드 삭제
+        if (!empty($data['slug'])) {
+            $deletedBoard = Board::withTrashed()->where('slug', $data['slug'])->whereNotNull('deleted_at')->first();
+            if ($deletedBoard) {
+                // 소프트 삭제된 게시판이 있으면 하드 삭제 및 관련 리소스 삭제
+                $fileGeneratorService = new BoardFileGeneratorService();
+                $fileGeneratorService->deleteBoardResources($deletedBoard);
+                $deletedBoard->forceDelete();
+            }
+        }
+        
         // slug 자동 생성 (비어있거나 중복일 경우)
         if (empty($data['slug'])) {
             $data['slug'] = $this->generateUniqueSlug($data['name']);
