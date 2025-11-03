@@ -126,6 +126,12 @@ class BoardPostService
             $sortOrder = $this->getNextSortOrder($slug);
         }
         
+        // is_active 필드 처리: 필드가 활성화되어 있고 요청에 있으면 사용, 없으면 기본값 true
+        $isActive = true;
+        if ($board && $board->isFieldEnabled('is_active')) {
+            $isActive = $request->has('is_active') ? (bool)$request->input('is_active') : true;
+        }
+
         return [
             'user_id' => null,
             'author_name' => $validated['author_name'] ?? '관리자',
@@ -134,6 +140,7 @@ class BoardPostService
             'category' => $validated['category'] ?? null,
             'is_notice' => $request->has('is_notice'),
             'is_secret' => $request->has('is_secret'),
+            'is_active' => $isActive,
             'password' => $validated['password'] ?? null,
             'thumbnail' => $this->handleThumbnail($request, $slug),
             'attachments' => json_encode($this->handleAttachments($request, $slug)),
@@ -295,7 +302,10 @@ class BoardPostService
      */
     public function updatePost(string $slug, int $postId, array $validated, Request $request, $board): bool
     {
-        $data = $this->prepareUpdateData($validated, $request, $slug, $board);
+        // 기존 게시물 조회
+        $existingPost = $this->getPost($slug, $postId);
+        
+        $data = $this->prepareUpdateData($validated, $request, $slug, $board, $existingPost);
         
         return DB::table($this->getTableName($slug))
             ->where('id', $postId)
@@ -305,14 +315,27 @@ class BoardPostService
     /**
      * 수정 데이터 준비
      */
-    private function prepareUpdateData(array $validated, Request $request, string $slug, $board): array
+    private function prepareUpdateData(array $validated, Request $request, string $slug, $board, $existingPost = null): array
     {
+        // is_active 필드 처리
+        // 필드가 활성화되어 있고 요청에 있으면 사용
+        // 필드가 비활성화되어 있으면 기존 값 유지 (수정 시)
+        // 필드가 활성화되어 있지만 요청에 없으면 기본값 true
+        $isActive = true;
+        if ($board && $board->isFieldEnabled('is_active')) {
+            $isActive = $request->has('is_active') ? (bool)$request->input('is_active') : true;
+        } elseif ($existingPost && isset($existingPost->is_active)) {
+            // 필드가 비활성화되어 있으면 기존 값 유지
+            $isActive = (bool)$existingPost->is_active;
+        }
+
         return [
             'title' => $validated['title'],
             'content' => $this->sanitizeContent($validated['content']),
             'category' => $validated['category'] ?? null,
             'is_notice' => $request->has('is_notice'),
             'is_secret' => $request->has('is_secret'),
+            'is_active' => $isActive,
             'author_name' => $validated['author_name'] ?? null,
             'password' => $validated['password'] ?? null,
             'thumbnail' => $this->handleThumbnail($request, $slug),

@@ -115,6 +115,7 @@ class BoardTemplate extends Model
             'attachments' => ['enabled' => true, 'required' => false, 'label' => '첨부파일'],
             'thumbnail' => ['enabled' => false, 'required' => false, 'label' => '썸네일'],
             'is_secret' => ['enabled' => true, 'required' => false, 'label' => '비밀글'],
+            'is_active' => ['enabled' => true, 'required' => false, 'label' => '노출여부'],
         ];
     }
 

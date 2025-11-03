@@ -158,7 +158,7 @@ class BoardTemplateService
         $fieldConfig = [];
         
         // 기본 필드들
-        $fields = ['title', 'content', 'category', 'author_name', 'password', 'attachments', 'thumbnail', 'is_secret', 'created_at'];
+        $fields = ['title', 'content', 'category', 'author_name', 'password', 'attachments', 'thumbnail', 'is_secret', 'is_active', 'created_at'];
         
         foreach ($fields as $field) {
             $enabled = isset($data['field_' . $field . '_enabled']) && $data['field_' . $field . '_enabled'];
@@ -219,6 +219,7 @@ class BoardTemplateService
             'attachments' => '첨부파일',
             'thumbnail' => '썸네일',
             'is_secret' => '비밀글',
+            'is_active' => '노출여부',
             'created_at' => '등록일',
         ];
         

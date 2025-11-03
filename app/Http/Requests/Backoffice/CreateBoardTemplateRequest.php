@@ -57,6 +57,10 @@ class CreateBoardTemplateRequest extends FormRequest
             'field_is_secret_required' => 'nullable|boolean',
             'field_is_secret_label' => 'nullable|string|max:50',
             
+            'field_is_active_enabled' => 'nullable|boolean',
+            'field_is_active_required' => 'nullable|boolean',
+            'field_is_active_label' => 'nullable|string|max:50',
+            
             'field_created_at_enabled' => 'nullable|boolean',
             'field_created_at_required' => 'nullable|boolean',
             'field_created_at_label' => 'nullable|string|max:50',

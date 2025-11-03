@@ -8,7 +8,7 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('board_singles', function (Blueprint $table) {
+        Schema::create('board_test', function (Blueprint $table) {
             // 기본 컬럼들 (모든 게시판 공통)
             $table->id();
             $table->unsignedBigInteger('user_id')->nullable();
@@ -29,6 +29,9 @@ return new class extends Migration
             // 갤러리 전용 컬럼 (사용하지 않으면 NULL)
             $table->string('thumbnail')->nullable(); // 썸네일 이미지 경로
             
+            // 게시물 노출 여부
+            $table->boolean('is_active')->default(true)->comment('게시물 노출 여부');
+            
             $table->timestamps();
             $table->softDeletes();
 
@@ -43,6 +46,6 @@ return new class extends Migration
 
     public function down(): void
     {
-        Schema::dropIfExists('board_singles');
+        Schema::dropIfExists('board_test');
     }
 };

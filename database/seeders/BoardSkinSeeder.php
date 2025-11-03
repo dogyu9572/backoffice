@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 use App\Models\BoardSkin;
 
 class BoardSkinSeeder extends Seeder
@@ -13,12 +14,13 @@ class BoardSkinSeeder extends Seeder
     public function run(): void
     {
         // 기존 데이터 삭제 (외래키 고려)
-        \DB::statement('SET FOREIGN_KEY_CHECKS=0;');
+        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
         BoardSkin::query()->delete();
-        \DB::statement('SET FOREIGN_KEY_CHECKS=1;');
+        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
 
         $skins = [
             [
+                'id' => 1,
                 'name' => '기본 스킨',
                 'directory' => 'default',
                 'description' => '기본 게시판 스킨입니다. 모든 게시판에서 사용할 수 있는 기본 스킨입니다.',
@@ -33,6 +35,7 @@ class BoardSkinSeeder extends Seeder
                 'is_default' => true,
             ],
             [
+                'id' => 2,
                 'name' => '갤러리 스킨',
                 'directory' => 'gallery',
                 'description' => '갤러리 형태의 게시판에서 사용할 수 있는 이미지 중심 스킨입니다.',
@@ -52,7 +55,8 @@ class BoardSkinSeeder extends Seeder
         ];
 
         foreach ($skins as $skin) {
-            BoardSkin::create([
+            $skinData = [
+                'id' => $skin['id'],
                 'name' => $skin['name'],
                 'directory' => $skin['directory'],
                 'description' => $skin['description'],
@@ -60,7 +64,11 @@ class BoardSkinSeeder extends Seeder
                 'options' => json_encode($skin['options']),
                 'is_active' => $skin['is_active'],
                 'is_default' => $skin['is_default'],
-            ]);
+                'created_at' => now(),
+                'updated_at' => now(),
+            ];
+            
+            DB::table('board_skins')->insert($skinData);
         }
     }
 }

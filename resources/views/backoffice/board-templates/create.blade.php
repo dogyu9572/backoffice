@@ -78,6 +78,7 @@
                                 'author_name' => ['label' => '작성자', 'enabled' => false, 'required' => false],
                                 'password' => ['label' => '비밀번호', 'enabled' => false, 'required' => false],                                
                                 'is_secret' => ['label' => '비밀글', 'enabled' => false, 'required' => false],
+                                'is_active' => ['label' => '노출여부', 'enabled' => true, 'required' => false],
                                 'created_at' => ['label' => '등록일', 'enabled' => false, 'required' => false],
                             ];
                         @endphp

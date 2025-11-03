@@ -109,6 +109,7 @@
                                     'password' => ['label' => '비밀번호'],
                                     'attachments' => ['label' => '첨부파일'],
                                     'is_secret' => ['label' => '비밀글'],
+                                    'is_active' => ['label' => '노출여부'],
                                     'created_at' => ['label' => '등록일'],
                                 ];
                             @endphp

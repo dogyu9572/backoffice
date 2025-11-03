@@ -65,6 +65,9 @@ class BoardFileGeneratorService
                 // 갤러리 전용 컬럼 (사용하지 않으면 NULL)
                 $table->string('thumbnail')->nullable(); // 썸네일 이미지 경로
                 
+                // 게시물 노출 여부
+                $table->boolean('is_active')->default(true)->comment('게시물 노출 여부');
+                
                 $table->timestamps();
                 $table->softDeletes();
 
@@ -114,7 +117,6 @@ class BoardFileGeneratorService
         $skinMap = [
             1 => 'default',   // 기본 스킨
             2 => 'gallery',   // 갤러리 스킨
-            3 => 'gallery',   // 갤러리 스킨 (실제 DB 값)
             // 추가 스킨들...
         ];
         
@@ -270,6 +272,9 @@ return new class extends Migration
             
             // 갤러리 전용 컬럼 (사용하지 않으면 NULL)
             \$table->string('thumbnail')->nullable(); // 썸네일 이미지 경로
+            
+            // 게시물 노출 여부
+            \$table->boolean('is_active')->default(true)->comment('게시물 노출 여부');
             
             \$table->timestamps();
             \$table->softDeletes();
