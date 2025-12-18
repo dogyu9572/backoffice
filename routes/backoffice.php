@@ -16,6 +16,7 @@ use App\Http\Controllers\Backoffice\AdminController;
 use App\Http\Controllers\Backoffice\AdminGroupController;
 use App\Http\Controllers\Backoffice\BannerController;
 use App\Http\Controllers\Backoffice\PopupController;
+use App\Http\Controllers\Backoffice\AccessStatisticsController;
 
 // =============================================================================
 // 백오피스 인증 라우트
@@ -105,10 +106,16 @@ Route::prefix('backoffice')->middleware(['backoffice'])->group(function () {
     // 접속 로그 관리
     Route::get('logs/access', [LogController::class, 'access'])
         ->name('backoffice.logs.access');
-    Route::get('logs/user-access', [LogController::class, 'userAccessLogs'])
-        ->name('backoffice.logs.user-access');
-    Route::get('logs/admin-access', [LogController::class, 'adminAccessLogs'])
-        ->name('backoffice.logs.admin-access');
+    Route::get('user-access-logs', [LogController::class, 'userAccessLogs'])
+        ->name('backoffice.user-access-logs');
+    Route::get('admin-access-logs', [LogController::class, 'adminAccessLogs'])
+        ->name('backoffice.admin-access-logs');
+    
+    // 통계 관리
+    Route::get('access-statistics', [AccessStatisticsController::class, 'index'])
+        ->name('backoffice.access-statistics');
+    Route::get('access-statistics/get-statistics', [AccessStatisticsController::class, 'getStatistics'])
+        ->name('backoffice.access-statistics.get-statistics');
 
     // 관리자 계정 관리
     Route::post('admins/bulk-destroy', [AdminController::class, 'bulkDestroy'])

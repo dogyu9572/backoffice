@@ -28,7 +28,7 @@ jobs:
           echo "현재 디렉토리: $(pwd)"
           echo "Git 커밋: $(git log --oneline -1)"
           
-          cd /var/www/pls
+          cd /home/ubuntu/www/backoffice
           echo "프로젝트 디렉토리로 이동: $(pwd)"
           
           echo "=== Git 상태 확인 ==="
@@ -46,7 +46,7 @@ jobs:
             echo ""
             echo "💡 해결 방법:"
             echo "  1. 실서버 SSH 접속"
-            echo "  2. cd /var/www/pls"
+            echo "  2. cd /home/ubuntu/www/backoffice"
             echo "  3. git add ."
             echo "  4. git commit -m '실서버 직접 수정 반영'"
             echo "  5. git push origin main"
@@ -76,7 +76,7 @@ jobs:
           
           echo "=== 서비스 재시작 ==="
           php artisan queue:restart
-          sudo systemctl reload nginx
+          sudo systemctl reload nginx 2>/dev/null || echo "⚠️  nginx reload skipped (권한 없음, 수동 재시작 필요)"
           
           echo "=== 배포 완료 ==="
           echo "최종 상태:"

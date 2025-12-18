@@ -5,6 +5,7 @@
 @section('styles')
 <link rel="stylesheet" href="{{ asset('css/common/buttons.css') }}">
 <link rel="stylesheet" href="{{ asset('css/backoffice/users.css') }}">
+<link rel="stylesheet" href="{{ asset('css/backoffice/boards.css') }}">
 @endsection
 
 @section('content')
@@ -31,7 +32,7 @@
         <div class="board-card-body">
             <!-- 검색 필터 -->
             <div class="user-filter">
-                <form method="GET" action="{{ route('backoffice.logs.admin-access') }}" class="filter-form">
+                <form method="GET" action="{{ route('backoffice.admin-access-logs') }}" class="filter-form">
                     <div class="filter-row">
                         <div class="filter-group">
                             <label for="name" class="filter-label">관리자명</label>
@@ -53,7 +54,7 @@
                                 <button type="submit" class="btn btn-primary">
                                     <i class="fas fa-search"></i> 검색
                                 </button>
-                                <a href="{{ route('backoffice.logs.admin-access') }}" class="btn btn-secondary">
+                                <a href="{{ route('backoffice.admin-access-logs') }}" class="btn btn-secondary">
                                     <i class="fas fa-undo"></i> 초기화
                                 </a>
                             </div>
@@ -64,12 +65,12 @@
 
             @if($logs->count() > 0)
                 <!-- 목록 개수 선택 -->
-                <div class="user-list-header">
+                <div class="board-list-header">
                     <div class="list-info">
                         <span class="list-count">Total : {{ $logs->total() }}</span>
                     </div>
                     <div class="list-controls">
-                        <form method="GET" action="{{ route('backoffice.logs.admin-access') }}" class="per-page-form">
+                        <form method="GET" action="{{ route('backoffice.admin-access-logs') }}" class="per-page-form">
                             @foreach(request()->except('per_page') as $key => $value)
                                 <input type="hidden" name="{{ $key }}" value="{{ $value }}">
                             @endforeach
@@ -101,8 +102,8 @@
                                     <td>{{ $logs->total() - ($logs->currentPage() - 1) * $logs->perPage() - $loop->index }}</td>
                                     <td>{{ $log->name }}</td>
                                     <td>{{ $log->ip_address }}</td>
-                                    <td>{{ $log->user ? $log->user->created_at->format('Y-m-d H:i:s') : '-' }}</td>
-                                    <td>{{ $log->login_at->format('Y-m-d H:i:s') }}</td>
+                                    <td>{{ $log->admin ? $log->admin->created_at->format('Y-m-d H:i:s') : '-' }}</td>
+                                    <td>{{ $log->accessed_at->format('Y-m-d H:i:s') }}</td>
                                     <td>{{ $log->referer ?: '-' }}</td>
                                 </tr>
                             @endforeach
@@ -120,4 +121,3 @@
     </div>
 </div>
 @endsection
-
