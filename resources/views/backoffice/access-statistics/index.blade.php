@@ -277,3 +277,4 @@
 <script src="{{ asset('js/backoffice/access-statistics.js') }}"></script>
 @endsection
 
+
