@@ -9,15 +9,12 @@
 @section('content')
 <div class="board-container">
     <div class="board-header">
-        <a href="{{ route('backoffice.board-templates.index') }}" class="btn btn-secondary">
+        <a href="{{ route('backoffice.board-templates.index') }}" class="btn btn-secondary btn-sm">
             <i class="fas fa-arrow-left"></i> 목록으로
         </a>
     </div>
 
     <div class="board-card">
-        <div class="board-card-header">
-            <h6>템플릿 정보 입력</h6>
-        </div>
         <div class="board-card-body">
             @if ($errors->any())
                 <div class="board-alert board-alert-danger">

@@ -215,27 +215,9 @@ class ButtonManager {
         if (isProcessing) {
             button.disabled = true;
             button.classList.add('submitting');
-            
-            // 원본 텍스트 저장
-            if (!button.dataset.originalText) {
-                button.dataset.originalText = button.textContent || button.innerHTML;
-            }
-            
-            // 로딩 텍스트 설정 (펼치기 버튼, 1차 추가 버튼, 그룹 추가 버튼은 제외)
-            if (button.tagName === 'BUTTON' && !button.classList.contains('expand-toggle') && !button.classList.contains('add-first-depth-btn') && !button.classList.contains('add-group-btn')) {
-                button.innerHTML = '<span class="spinner"></span> 처리 중...';
-            }
         } else {
             button.disabled = false;
             button.classList.remove('submitting');
-            
-            // 원본 텍스트 복원
-            if (button.dataset.originalText) {
-                if (button.tagName === 'BUTTON') {
-                    button.innerHTML = button.dataset.originalText;
-                }
-                delete button.dataset.originalText;
-            }
         }
     }
 

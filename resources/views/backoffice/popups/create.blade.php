@@ -12,7 +12,7 @@
 @section('content')
     <div class="board-container">
         <div class="board-header">      
-            <a href="{{ route('backoffice.popups.index') }}" class="btn btn-secondary">
+            <a href="{{ route('backoffice.popups.index') }}" class="btn btn-secondary btn-sm">
                 <i class="fas fa-arrow-left"></i> <span class="btn-text">목록으로</span>
             </a>
         </div>

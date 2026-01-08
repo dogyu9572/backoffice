@@ -9,7 +9,7 @@
 @section('content')
 <div class="board-container">
     <div class="board-header">      
-        <a href="{{ route('backoffice.boards.index') }}" class="btn btn-secondary">
+        <a href="{{ route('backoffice.boards.index') }}" class="btn btn-secondary btn-sm">
             <i class="fas fa-arrow-left"></i> <span class="btn-text">목록으로</span>
         </a>
     </div>
@@ -27,9 +27,6 @@
     <div class="row">
         <div class="col-12">
             <div class="board-card">
-                <div class="board-card-header">
-                    <h6>정보 수정</h6>
-                </div>
                 <div class="board-card-body">
                     <!-- 템플릿 정보 표시 -->
                     @if($board->template)

@@ -10,7 +10,7 @@
 @section('content')
 <div class="user-form-container">
     <div class="form-header">      
-        <a href="{{ route('backoffice.users.index') }}" class="btn btn-secondary">
+        <a href="{{ route('backoffice.users.index') }}" class="btn btn-secondary btn-sm">
             <i class="fas fa-arrow-left"></i> <span class="btn-text">목록으로</span>
         </a>
     </div>

@@ -12,7 +12,7 @@
     <div class="detail-header">
         <h1>회원 정보</h1>
         <div class="detail-actions">
-            <a href="{{ route('backoffice.users.index') }}" class="btn btn-secondary">
+            <a href="{{ route('backoffice.users.index') }}" class="btn btn-secondary btn-sm">
                 <i class="fas fa-arrow-left"></i> <span class="btn-text">목록으로</span>
             </a>
         </div>

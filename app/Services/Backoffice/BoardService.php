@@ -93,6 +93,13 @@ class BoardService
             $data['enable_notice'] = false;
         }
 
+        // is_active 기본값 설정 (무조건 저장되도록 보장)
+        if (!isset($data['is_active'])) {
+            $data['is_active'] = true;
+        } else {
+            $data['is_active'] = (bool) $data['is_active'];
+        }
+
         // 필드 설정 처리
         if (isset($data['field_config'])) {
             if (is_string($data['field_config'])) {

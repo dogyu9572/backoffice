@@ -14,7 +14,7 @@
             <a href="{{ route('backoffice.boards.edit', $board) }}" class="btn btn-primary">
                 <i class="fas fa-edit"></i> 수정
             </a>
-            <a href="{{ route('backoffice.boards.index') }}" class="btn btn-secondary ml-2">
+            <a href="{{ route('backoffice.boards.index') }}" class="btn btn-secondary btn-sm ml-2">
                 <i class="fas fa-arrow-left"></i> 목록으로
             </a>
         </div>
@@ -32,9 +32,6 @@
     <div class="row">
         <div class="col-md-8">
             <div class="board-card">
-                <div class="board-card-header">
-                    <h6>게시판 정보</h6>
-                </div>
                 <div class="board-card-body">
                     <div class="table-responsive">
                         <table class="board-table">

@@ -49,7 +49,6 @@ function initLoginIdCheck() {
      */
     function checkLoginIdDuplicate(loginId) {
         checkBtn.disabled = true;
-        checkBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 확인 중...';
 
         const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
 
@@ -65,7 +64,6 @@ function initLoginIdCheck() {
         .then(response => response.json())
         .then(data => {
             checkBtn.disabled = false;
-            checkBtn.innerHTML = '<i class="fas fa-check"></i> 중복 확인';
 
             if (data.available) {
                 isChecked = true;
@@ -79,7 +77,6 @@ function initLoginIdCheck() {
         .catch(error => {
             console.error('Error:', error);
             checkBtn.disabled = false;
-            checkBtn.innerHTML = '<i class="fas fa-check"></i> 중복 확인';
             showMessage('중복 체크 중 오류가 발생했습니다.', 'error');
         });
     }

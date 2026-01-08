@@ -9,15 +9,12 @@
 @section('content')
 <div class="board-container">
     <div class="board-header">
-        <a href="{{ route('backoffice.board-skins.index') }}" class="btn btn-secondary">
+        <a href="{{ route('backoffice.board-skins.index') }}" class="btn btn-secondary btn-sm">
             <i class="fas fa-arrow-left"></i> 목록으로
         </a>
     </div>
 
     <div class="board-card">
-        <div class="board-card-header">
-            <h6>{{ $pageTitle }}</h6>
-        </div>
         <div class="board-card-body">
             @if ($errors->any())
                 <div class="board-alert board-alert-danger">
@@ -110,9 +107,6 @@
 
     <!-- 스킨 정보 -->
     <div class="board-card">
-        <div class="board-card-header">
-            <h6>스킨 정보</h6>
-        </div>
         <div class="board-card-body">
             <div class="board-timestamps">
                 <p><strong>생성일:</strong> {{ $boardSkin->created_at->format('Y-m-d H:i:s') }}</p>

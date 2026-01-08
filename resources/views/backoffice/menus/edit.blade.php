@@ -22,15 +22,12 @@
 
 <div class="board-container">
     <div class="board-header">
-        <a href="{{ route('backoffice.admin-menus.index') }}" class="btn btn-secondary">
+        <a href="{{ route('backoffice.admin-menus.index') }}" class="btn btn-secondary btn-sm">
             <i class="fas fa-arrow-left"></i> 목록으로
         </a>
     </div>
 
     <div class="board-card">
-        <div class="board-card-header">
-            <h6>{{ $pageTitle }}</h6>
-        </div>
         <div class="board-card-body">
             <form action="{{ route('backoffice.admin-menus.update', $admin_menu) }}" method="POST">
                 @csrf

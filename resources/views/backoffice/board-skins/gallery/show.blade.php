@@ -16,7 +16,7 @@
     <div class="board-container">
         <div class="board-page-header">
             <div class="board-page-buttons">
-                <a href="{{ route('backoffice.board-posts.index', $board->slug ?? 'gallery') }}" class="btn btn-secondary">
+                <a href="{{ route('backoffice.board-posts.index', $board->slug ?? 'gallery') }}" class="btn btn-secondary btn-sm">
                     <i class="fas fa-arrow-left"></i> 목록으로
                 </a>
             </div>

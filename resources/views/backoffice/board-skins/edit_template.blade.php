@@ -15,7 +15,7 @@
             <a href="{{ route('backoffice.board-skins.edit', $boardSkin) }}" class="skin-btn skin-btn-secondary">
                 <i class="fas fa-arrow-left"></i> 스킨 정보로
             </a>
-            <a href="{{ route('backoffice.board-skins.index') }}" class="skin-btn skin-btn-secondary">
+            <a href="{{ route('backoffice.board-skins.index') }}" class="btn btn-secondary btn-sm">
                 <i class="fas fa-list"></i> 목록으로
             </a>
         </div>

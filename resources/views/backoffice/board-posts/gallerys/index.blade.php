@@ -28,11 +28,6 @@
         </div>
 
         <div class="board-card">
-            <div class="board-card-header">
-                <div class="board-page-card-title">
-                    <h6>갤러리</h6>
-                </div>
-            </div>
             <div class="board-card-body">
                 <!-- 검색 필터 -->
                 <div class="board-filter">

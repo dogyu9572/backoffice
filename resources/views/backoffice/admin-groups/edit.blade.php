@@ -14,7 +14,7 @@
 @section('content')
 <div class="board-container admins-page">
     <div class="board-header">
-        <a href="{{ route('backoffice.admin-groups.index') }}" class="btn btn-secondary">
+        <a href="{{ route('backoffice.admin-groups.index') }}" class="btn btn-secondary btn-sm">
             <i class="fas fa-arrow-left"></i> 목록으로
         </a>
     </div>
@@ -30,11 +30,6 @@
     @endif
 
     <div class="board-card">
-        <div class="board-card-header">
-            <div class="board-page-card-title">
-                <h6>권한 그룹 수정</h6>
-            </div>
-        </div>
         <div class="board-card-body">
             <form id="adminGroupForm" action="{{ route('backoffice.admin-groups.update', $group) }}" method="POST">
                 @csrf

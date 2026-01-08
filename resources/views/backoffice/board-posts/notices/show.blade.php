@@ -16,18 +16,13 @@
     <div class="board-container">
         <div class="board-page-header">
             <div class="board-page-buttons">
-                <a href="{{ route('backoffice.board-posts.index', $board->slug ?? 'notice') }}" class="btn btn-secondary">
+                <a href="{{ route('backoffice.board-posts.index', $board->slug ?? 'notice') }}" class="btn btn-secondary btn-sm">
                     <i class="fas fa-arrow-left"></i> 목록으로
                 </a>
             </div>
         </div>
 
         <div class="board-card">
-            <div class="board-card-header">
-                <div class="board-page-card-title">
-                    <h6>공지사항</h6>
-                </div>
-            </div>
             <div class="board-card-body">
                 <div class="board-post-header">
                     <div class="board-post-title">

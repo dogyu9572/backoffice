@@ -9,7 +9,7 @@
 @section('content')
 <div class="board-container">
     <div class="board-header">      
-        <a href="{{ route('backoffice.banners.index') }}" class="btn btn-secondary">
+        <a href="{{ route('backoffice.banners.index') }}" class="btn btn-secondary btn-sm">
             <i class="fas fa-arrow-left"></i> <span class="btn-text">목록으로</span>
         </a>
     </div>
@@ -27,9 +27,6 @@
     <div class="row">
         <div class="col-12">
             <div class="board-card">
-                <div class="board-card-header">
-                    <h6>배너 수정</h6>
-                </div>
                 <div class="board-card-body">
                         <form action="{{ route('backoffice.banners.update', $banner) }}" method="POST" enctype="multipart/form-data">
                             @csrf
