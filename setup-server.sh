@@ -4,6 +4,94 @@
 PROJECT_NAME="cosrsvp-aws"
 APP_URL="https://cosrsvp-aws.hk-test.co.kr"
 
+# ============================================
+# 공통 함수
+# ============================================
+
+# .env에서 DB 정보 추출
+load_db_config() {
+    DB_HOST=$(grep "^DB_HOST=" .env | cut -d'=' -f2 | tr -d '"' | tr -d "'")
+    DB_PORT=$(grep "^DB_PORT=" .env | cut -d'=' -f2 | tr -d '"' | tr -d "'" || echo "3306")
+    DB_DATABASE=$(grep "^DB_DATABASE=" .env | cut -d'=' -f2 | tr -d '"' | tr -d "'")
+    DB_USERNAME=$(grep "^DB_USERNAME=" .env | cut -d'=' -f2 | tr -d '"' | tr -d "'")
+    DB_PASSWORD=$(grep "^DB_PASSWORD=" .env | cut -d'=' -f2 | tr -d '"' | tr -d "'")
+    
+    # DB_HOST가 "mysql"이면 127.0.0.1로 변경 (Docker 컨테이너 이름)
+    if [ "$DB_HOST" = "mysql" ]; then
+        DB_HOST="127.0.0.1"
+        sed -i "s/DB_HOST=mysql/DB_HOST=127.0.0.1/" .env
+    fi
+}
+
+# MySQL 연결 확인
+check_mysql_connection() {
+    echo "⏳ MySQL 연결 확인 중..."
+    load_db_config
+    
+    MAX_ATTEMPTS=10
+    ATTEMPT=0
+    
+    while [ $ATTEMPT -lt $MAX_ATTEMPTS ]; do
+        if mysqladmin ping -h "$DB_HOST" -P "$DB_PORT" -u "$DB_USERNAME" -p"$DB_PASSWORD" > /dev/null 2>&1; then
+            echo "✅ MySQL 연결 성공!"
+            return 0
+        else
+            ATTEMPT=$((ATTEMPT + 1))
+            echo "⏳ MySQL 준비 중... ($ATTEMPT/$MAX_ATTEMPTS)"
+            sleep 2
+        fi
+    done
+    
+    echo "❌ MySQL 연결 실패. 데이터베이스 설정을 확인해주세요."
+    echo "   DB_HOST: $DB_HOST"
+    echo "   DB_DATABASE: $DB_DATABASE"
+    echo "   DB_USERNAME: $DB_USERNAME"
+    return 1
+}
+
+# 세션 테이블 생성
+create_sessions_table() {
+    echo "📋 세션 테이블 확인 중..."
+    if ! php artisan tinker --execute="Schema::hasTable('sessions')" 2>/dev/null | grep -q "true"; then
+        echo "📋 세션 테이블 생성 중..."
+        php artisan tinker --execute="
+            if (!Schema::hasTable('sessions')) {
+                Schema::create('sessions', function (\$table) {
+                    \$table->string('id')->primary();
+                    \$table->foreignId('user_id')->nullable()->index();
+                    \$table->string('ip_address', 45)->nullable();
+                    \$table->text('user_agent')->nullable();
+                    \$table->text('payload');
+                    \$table->integer('last_activity')->index();
+                });
+                echo 'Sessions table created successfully';
+            } else {
+                echo 'Sessions table already exists';
+            }
+        "
+    else
+        echo "✅ 세션 테이블이 이미 존재합니다."
+    fi
+}
+
+# 캐시 정리
+clear_cache() {
+    echo "🧹 캐시 정리 중..."
+    php artisan config:clear
+    php artisan view:clear
+    
+    # 캐시 테이블이 있을 때만 캐시 클리어 실행
+    if php artisan tinker --execute="Schema::hasTable('cache')" 2>/dev/null | grep -q "true"; then
+        php artisan cache:clear
+    else
+        echo "⚠️ 캐시 테이블이 없어서 캐시 클리어를 건너뜁니다."
+    fi
+}
+
+# ============================================
+# 메인 실행 로직
+# ============================================
+
 echo "🚀 Laravel 서버 환경 설정 시작: $PROJECT_NAME"
 echo ""
 
@@ -86,40 +174,7 @@ fi
 # 7. MySQL 연결 확인
 echo ""
 echo "🗄️ 데이터베이스 설정 시작..."
-echo "⏳ MySQL 연결 확인 중..."
-
-# .env에서 DB 정보 추출
-DB_HOST=$(grep "^DB_HOST=" .env | cut -d'=' -f2 | tr -d '"' | tr -d "'")
-DB_PORT=$(grep "^DB_PORT=" .env | cut -d'=' -f2 | tr -d '"' | tr -d "'" || echo "3306")
-DB_DATABASE=$(grep "^DB_DATABASE=" .env | cut -d'=' -f2 | tr -d '"' | tr -d "'")
-DB_USERNAME=$(grep "^DB_USERNAME=" .env | cut -d'=' -f2 | tr -d '"' | tr -d "'")
-DB_PASSWORD=$(grep "^DB_PASSWORD=" .env | cut -d'=' -f2 | tr -d '"' | tr -d "'")
-
-# DB_HOST가 "mysql"이면 localhost로 변경 (Docker 컨테이너 이름)
-if [ "$DB_HOST" = "mysql" ]; then
-    DB_HOST="127.0.0.1"
-    sed -i "s/DB_HOST=mysql/DB_HOST=127.0.0.1/" .env
-fi
-
-MAX_ATTEMPTS=10
-ATTEMPT=0
-
-while [ $ATTEMPT -lt $MAX_ATTEMPTS ]; do
-    if mysqladmin ping -h "$DB_HOST" -P "$DB_PORT" -u "$DB_USERNAME" -p"$DB_PASSWORD" > /dev/null 2>&1; then
-        echo "✅ MySQL 연결 성공!"
-        break
-    else
-        ATTEMPT=$((ATTEMPT + 1))
-        echo "⏳ MySQL 준비 중... ($ATTEMPT/$MAX_ATTEMPTS)"
-        sleep 2
-    fi
-done
-
-if [ $ATTEMPT -eq $MAX_ATTEMPTS ]; then
-    echo "❌ MySQL 연결 실패. 데이터베이스 설정을 확인해주세요."
-    echo "   DB_HOST: $DB_HOST"
-    echo "   DB_DATABASE: $DB_DATABASE"
-    echo "   DB_USERNAME: $DB_USERNAME"
+if ! check_mysql_connection; then
     exit 1
 fi
 
@@ -132,41 +187,13 @@ echo "🌱 시더 실행 중..."
 php artisan db:seed
 
 # 10. 세션 테이블 확인 및 생성
-echo "📋 세션 테이블 확인 중..."
-if ! php artisan tinker --execute="Schema::hasTable('sessions')" 2>/dev/null | grep -q "true"; then
-    echo "📋 세션 테이블 생성 중..."
-    
-    php artisan tinker --execute="
-        if (!Schema::hasTable('sessions')) {
-            Schema::create('sessions', function (\$table) {
-                \$table->string('id')->primary();
-                \$table->foreignId('user_id')->nullable()->index();
-                \$table->string('ip_address', 45)->nullable();
-                \$table->text('user_agent')->nullable();
-                \$table->text('payload');
-                \$table->integer('last_activity')->index();
-            });
-            echo 'Sessions table created successfully';
-        } else {
-            echo 'Sessions table already exists';
-        }
-    "
-else
-    echo "✅ 세션 테이블이 이미 존재합니다."
-fi
+create_sessions_table
 
 # 11. 캐시 정리
-echo "🧹 캐시 정리 중..."
-php artisan config:clear
-php artisan view:clear
+clear_cache
 
-# 캐시 테이블이 있을 때만 캐시 클리어 실행
-if php artisan tinker --execute="Schema::hasTable('cache')" 2>/dev/null | grep -q "true"; then
-    php artisan cache:clear
-else
-    echo "⚠️ 캐시 테이블이 없어서 캐시 클리어를 건너뜁니다."
-fi
-
+# 완료 메시지
+load_db_config
 echo ""
 echo "=========================================="
 echo "✅ 서버 환경 설정 완료!"
