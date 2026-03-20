@@ -134,13 +134,25 @@ class CategoryService
      */
     public function deleteCategory(Category $category)
     {
-        // 하위 카테고리가 있는지 확인
-        if ($category->children()->count() > 0) {
-            throw new \Exception('하위 카테고리가 있어 삭제할 수 없습니다.');
-        }
+        return DB::transaction(function () use ($category) {
+            // FK cascade가 없는 환경에서도 동일하게 동작하도록 자식부터 재귀 삭제
+            $this->deleteDescendants($category);
+            $category->delete();
+            return true;
+        });
+    }
 
-        $category->delete();
-        return true;
+    /**
+     * 하위 카테고리 재귀 삭제
+     */
+    private function deleteDescendants(Category $category): void
+    {
+        $category->load('children');
+
+        foreach ($category->children as $child) {
+            $this->deleteDescendants($child);
+            $child->delete();
+        }
     }
 
     /**

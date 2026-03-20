@@ -91,19 +91,19 @@
 	                <div class="stats-content" style="display: flex; flex-direction: column; gap: 8px;">
 	                    <div class="stat-item" style="display: flex; justify-content: space-between; align-items: center;">
 	                        <span class="stat-label" style="color: #adb5bd; font-size: 0.85rem;">오늘</span>
-	                        <span class="stat-value" style="color: #fff; font-weight: 600; font-size: 0.9rem;">{{ number_format($visitorStats['today']) }}명</span>
+	                        <span class="stat-value" style="color: #fff; font-weight: 600; font-size: 0.9rem;">{{ number_format($visitorStats['today'] ?? 0) }}명</span>
 	                    </div>
 	                    <div class="stat-item" style="display: flex; justify-content: space-between; align-items: center;">
 	                        <span class="stat-label" style="color: #adb5bd; font-size: 0.85rem;">어제</span>
-	                        <span class="stat-value" style="color: #fff; font-weight: 600; font-size: 0.9rem;">{{ number_format($visitorStats['yesterday']) }}명</span>
+	                        <span class="stat-value" style="color: #fff; font-weight: 600; font-size: 0.9rem;">{{ number_format($visitorStats['yesterday'] ?? 0) }}명</span>
 	                    </div>
 	                    <div class="stat-item" style="display: flex; justify-content: space-between; align-items: center;">
 	                        <span class="stat-label" style="color: #adb5bd; font-size: 0.85rem;">이달</span>
-	                        <span class="stat-value" style="color: #fff; font-weight: 600; font-size: 0.9rem;">{{ number_format($visitorStats['this_month']) }}명</span>
+	                        <span class="stat-value" style="color: #fff; font-weight: 600; font-size: 0.9rem;">{{ number_format($visitorStats['this_month'] ?? 0) }}명</span>
 	                    </div>
 	                    <div class="stat-item" style="display: flex; justify-content: space-between; align-items: center;">
 	                        <span class="stat-label" style="color: #adb5bd; font-size: 0.85rem;">전체</span>
-	                        <span class="stat-value" style="color: #fff; font-weight: 600; font-size: 0.9rem;">{{ number_format($visitorStats['total']) }}명</span>
+	                        <span class="stat-value" style="color: #fff; font-weight: 600; font-size: 0.9rem;">{{ number_format($visitorStats['total'] ?? 0) }}명</span>
 	                    </div>
 	                </div>
 	            </div>

@@ -45,11 +45,25 @@ class DashboardService
     public function getVisitorStats(): array
     {
         $today = now()->format('Y-m-d');
-        
+        $yesterday = now()->subDay()->format('Y-m-d');
+
+        $todayVisitors = (int) (DailyVisitorStat::where('visit_date', $today)
+            ->value('visitor_count') ?? 0);
+        $yesterdayVisitors = (int) (DailyVisitorStat::where('visit_date', $yesterday)
+            ->value('visitor_count') ?? 0);
+        $thisMonthVisitors = (int) DailyVisitorStat::query()
+            ->whereYear('visit_date', now()->year)
+            ->whereMonth('visit_date', now()->month)
+            ->sum('visitor_count');
+        $totalVisitors = (int) DailyVisitorStat::sum('visitor_count');
+
         return [
-            'today_visitors' => DailyVisitorStat::where('visit_date', $today)
-                ->value('visitor_count') ?? 0,
-            'total_visitors' => DailyVisitorStat::sum('visitor_count'),
+            'today' => $todayVisitors,
+            'yesterday' => $yesterdayVisitors,
+            'this_month' => $thisMonthVisitors,
+            'total' => $totalVisitors,
+            'today_visitors' => $todayVisitors,
+            'total_visitors' => $totalVisitors,
             'daily_stats' => $this->getDailyChartData(),
             'monthly_stats' => $this->getMonthlyChartData(),
         ];

@@ -1,8 +1,8 @@
 #!/bin/bash
 
 # Laravel 서버 환경 자동 설정 스크립트
-PROJECT_NAME="cosrsvp-aws"
-APP_URL="https://cosrsvp-aws.hk-test.co.kr"
+PROJECT_NAME="homenew"
+APP_URL="https://homenew.hk-test.co.kr"
 
 # ============================================
 # 공통 함수
@@ -130,7 +130,7 @@ if ! grep -q "^DB_USERNAME=" .env || grep -q "^DB_USERNAME=sail" .env; then
 fi
 
 if ! grep -q "^DB_PASSWORD=" .env || grep -q "^DB_PASSWORD=password" .env; then
-    sed -i "s/DB_PASSWORD=password/DB_PASSWORD=cosrsvp-aws@1234/" .env
+    sed -i "s/DB_PASSWORD=password/DB_PASSWORD=homenew@1234/" .env
 fi
 
 # 3. 권한 설정
@@ -143,6 +143,21 @@ find storage -type d -exec chmod 775 {} \; 2>/dev/null
 find storage -type f -exec chmod 664 {} \; 2>/dev/null
 find bootstrap/cache -type d -exec chmod 775 {} \; 2>/dev/null
 find bootstrap/cache -type f -exec chmod 664 {} \; 2>/dev/null
+
+# PHP-FPM(보통 www-data)이 storage에 쓰려면 소유자 일치 또는 others 쓰기 필요 (775/664만으로는 부족한 경우가 많음)
+if [ "$(id -u)" -eq 0 ]; then
+    WEB_USER="${WEB_USER:-www-data}"
+    if id -u "$WEB_USER" >/dev/null 2>&1; then
+        chown -R "$WEB_USER:$WEB_USER" storage bootstrap/cache
+        echo "✅ storage, bootstrap/cache → $WEB_USER:$WEB_USER"
+    else
+        chmod -R o+rwX storage bootstrap/cache
+        echo "⚠️ 사용자 $WEB_USER 없음 → others rwx 적용"
+    fi
+else
+    chmod -R o+rwX storage bootstrap/cache
+    echo "✅ 비루트 실행: PHP 프로세스가 쓸 수 있도록 others rwx 적용"
+fi
 
 echo "✅ 권한 설정 완료"
 

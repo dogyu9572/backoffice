@@ -21,4 +21,34 @@ yarn-error.log
 .DS_Store
 Thumbs.db
 
+# IDE 및 에디터 관련
+.cursor-server/
+.cursor/
+.config/
+.local/
+.ssh/
+.npm/
+.dbclient/
+
+# 시스템 파일
+.bash_history
+.bashrc
+.profile
+.viminfo
+.lesshst
+
+# 백업 파일
+*.backup
+public.backup/
+setup-*-server.sh.backup
+
+# 임시 파일
+*.tmp
+*.swp
+*~
+
 public/temp/
+docs/
+backup/
+deploy/
+storage/
