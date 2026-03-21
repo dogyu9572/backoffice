@@ -1,0 +1,21 @@
+---
+description: WSL + Docker + Sail 개발 환경 운영 규칙
+globs: "{docker-compose*.yml,.env,.env.*,scripts/**/*,Makefile}"
+alwaysApply: false
+---
+
+# 개발 환경 운영 규칙
+
+## 실행 환경
+- 터미널 명령어는 WSL(Ubuntu) 환경 기준으로 실행한다.
+- PHP/Composer/Artisan 명령은 Docker 컨테이너 내부 실행을 우선한다.
+- Laravel Sail + Docker + MySQL 조합을 기본 개발 환경으로 사용한다.
+
+## 운영 점검
+- 컨테이너 상태는 `docker ps`로 확인한다.
+- 로그 확인은 `docker logs`를 사용한다.
+- 환경 설정은 `.env`와 `docker-compose.yml`에서 관리한다.
+
+## 데이터베이스
+- MySQL 8.0, `utf8mb4`, `STRICT_TRANS_TABLES` 기준을 따른다.
+- DB 연결 정보는 `.env` 기준으로 해석한다.
