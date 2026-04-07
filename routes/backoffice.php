@@ -17,6 +17,7 @@ use App\Http\Controllers\Backoffice\AdminGroupController;
 use App\Http\Controllers\Backoffice\BannerController;
 use App\Http\Controllers\Backoffice\PopupController;
 use App\Http\Controllers\Backoffice\AccessStatisticsController;
+use App\Http\Controllers\Backoffice\MemberController;
 
 // =============================================================================
 // 백오피스 인증 라우트
@@ -214,6 +215,20 @@ Route::prefix('backoffice')->middleware(['backoffice'])->group(function () {
     Route::resource('users', UserController::class, [
         'names' => 'backoffice.users'
     ]);
+    Route::get('withdrawn', [MemberController::class, 'withdrawn'])->name('backoffice.withdrawn');
+    Route::post('withdrawn/{id}/restore', [MemberController::class, 'restore'])->name('backoffice.withdrawn.restore');
+    Route::post('withdrawn/{id}/force-delete', [MemberController::class, 'forceDelete'])->name('backoffice.withdrawn.force-delete');
+    Route::post('withdrawn/force-delete-multiple', [MemberController::class, 'forceDeleteMultiple'])->name('backoffice.withdrawn.force-delete-multiple');
+
+    Route::resource('members', MemberController::class, [
+        'names' => 'backoffice.members',
+        'parameters' => ['members' => 'user'],
+    ]);
+    Route::post('members/check-email', [MemberController::class, 'checkDuplicateEmail'])->name('backoffice.members.check-email');
+    Route::post('members/check-phone', [MemberController::class, 'checkDuplicatePhone'])->name('backoffice.members.check-phone');
+    Route::get('members/search-school', [MemberController::class, 'searchSchool'])->name('backoffice.members.search-school');
+    Route::post('members/delete-multiple', [MemberController::class, 'destroyMultiple'])->name('backoffice.members.delete-multiple');
+    Route::get('members/export', [MemberController::class, 'export'])->name('backoffice.members.export');
 
     // 배너 관리
     Route::resource('banners', BannerController::class, [

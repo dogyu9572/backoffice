@@ -300,7 +300,7 @@ function updateRecentUsersTable(users) {
             <td>${user.created_at}</td>
             <td><span class="table-badge badge-${user.role === 'admin' ? 'danger' : 'info'}">${user.role}</span></td>
             <td>
-                <a href="/backoffice/users/${user.id}/edit" class="table-action table-action-edit">
+                <a href="/backoffice/members/${user.id}/edit" class="table-action table-action-edit">
                     <i class="fas fa-user-edit"></i>
                 </a>
             </td>

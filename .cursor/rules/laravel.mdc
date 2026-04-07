@@ -10,5 +10,9 @@ alwaysApply: false
 - `00-global-principles.mdc`: 공통 원칙, 네이밍, 보안, 일관성
 - `10-laravel-architecture.mdc`: 컨트롤러/서비스/요청/모델 책임 분리
 - `20-blade-and-assets.mdc`: Blade 표시 규칙, CSS/JS 분리
+- `25-backoffice-ui-consistency.mdc`: 백오피스 UI 일관성 및 레퍼런스 강제
+- `26-backoffice-naming-and-shared-crud.mdc`: bo-* 공용 네이밍 및 CRUD 공용화
+- `27-change-preflight-checklist.mdc`: 작업 완료 전 필수 점검 체크리스트
+- `28-collaboration-ambiguity-gate.mdc`: 애매/위험 작업 시 선확인 협업 게이트
 - `30-migrations-policy.mdc`: 마이그레이션/시더 안전 규칙
 - `40-dev-environment-ops.mdc`: WSL + Docker + Sail 운영 규칙

@@ -1,0 +1,78 @@
+/* 백오피스 공용 CRUD 레이아웃 스타일 */
+.board-filter .checkbox-group {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+    padding-top: 5px;
+}
+
+.board-filter .checkbox-label {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    cursor: pointer;
+    margin: 0;
+    font-size: 0.875rem;
+}
+
+.bo-form-list { width: 100%; }
+.bo-form-row {
+    display: flex;
+    align-items: flex-start;
+    padding: 8px 0;
+    border-bottom: 1px solid #f0f0f0;
+}
+.bo-form-row:last-child { border-bottom: none; }
+.bo-form-label {
+    width: 150px;
+    min-width: 150px;
+    padding: 8px 0;
+    font-weight: 600;
+    color: #495057;
+    flex-shrink: 0;
+}
+.bo-form-field { flex: 1; min-width: 0; }
+.bo-form-field .board-form-control { width: 100%; max-width: 400px; }
+.bo-section-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: #495057;
+    margin-bottom: 24px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #e8e8e8;
+}
+
+.input-with-button { display: flex; gap: 10px; }
+.input-with-button .board-form-control { flex: 1; max-width: none; }
+.checkbox-group { display: flex; gap: 15px; }
+.checkbox-label { display: flex; align-items: center; gap: 5px; cursor: pointer; }
+.board-radio-group { display: flex; gap: 15px; }
+.board-radio-item { display: flex; align-items: center; gap: 5px; }
+.check-result { margin-top: 5px; font-size: 12px; padding: 5px; }
+.check-result.success { color: #28a745; }
+.check-result.error { color: #dc3545; }
+.popup#searchSchool { display: none; }
+.popup#searchSchool.is-open { display: block !important; }
+
+.bo-gap-bottom { margin-bottom: 10px; }
+.bo-school-direct { max-width: 400px; }
+.bo-inline-error {
+    display: block;
+    color: #c00;
+    font-size: 0.875rem;
+    margin-top: 0.25rem;
+}
+.bo-readonly-box {
+    background-color: #f8f9fa;
+    padding: 8px 12px;
+    display: inline-block;
+}
+.bo-password-help {
+    display: block;
+    margin-top: 5px;
+    font-size: 12px;
+}
+.bo-inline-form {
+    display: inline-block;
+    margin: 0;
+}

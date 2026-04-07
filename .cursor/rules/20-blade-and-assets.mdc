@@ -1,7 +1,7 @@
 ---
 description: Blade 템플릿 및 정적 자산 규칙
 globs: "{resources/views/**/*.blade.php,public/js/**/*.js,public/css/**/*.css}"
-alwaysApply: false
+alwaysApply: true
 ---
 
 # Blade 및 자산 규칙
@@ -36,3 +36,8 @@ alwaysApply: false
 ## 예외 정책
 - 긴급 장애 대응 등 불가피한 경우에만 임시 인라인 코드를 허용한다.
 - 임시 인라인 코드는 같은 작업 내에서 외부 파일로 즉시 환원한다.
+
+## 작업 완료 전 필수 점검
+- Blade 변경 후 `style=""`, `onclick=""`, `<style>`, `<script>` 인라인 코드가 남아있는지 확인한다.
+- 한 줄에 과도하게 몰린 태그/속성은 줄바꿈과 들여쓰기로 정렬해 가독성을 보장한다.
+- create/edit, index/detail처럼 유사 화면은 공통 partial/component로 중복을 우선 제거한다.

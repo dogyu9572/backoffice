@@ -3,9 +3,7 @@
 @section('title', ($board->name ?? '게시판'))
 
 @section('styles')
-     <link rel="stylesheet" href="{{ asset('css/backoffice/summernote-custom.css') }}">
-    <!-- Summernote CSS (Bootstrap 기반, 완전 무료) -->
-    <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.css" rel="stylesheet">
+    
 @endsection
 
 @section('content')
@@ -87,7 +85,7 @@
                             <span class="required">*</span>
                         @endif
                     </label>
-                    <textarea class="board-form-control board-form-textarea" id="content" name="content" rows="15" @if($board->isFieldRequired('content')) required @endif>{{ old('content') }}</textarea>
+                    <textarea class="board-form-control board-form-textarea" id="content" name="content" rows="15" data-backoffice-ckeditor data-source-editing="true" @if($board->isFieldRequired('content')) required @endif>{{ old('content') }}</textarea>
                 </div>
                 @endif
 
@@ -196,7 +194,7 @@
                                        value="{{ old('custom_field_' . $fieldConfig['name']) }}"
                                        @if($fieldConfig['required']) required @endif>
                             @elseif($fieldConfig['type'] === 'editor')
-                                <textarea class="board-form-control board-form-textarea summernote-editor" 
+                                <textarea class="board-form-control board-form-textarea" data-backoffice-ckeditor
                                           id="custom_field_{{ $fieldConfig['name'] }}" 
                                           name="custom_field_{{ $fieldConfig['name'] }}" 
                                           rows="10"
@@ -302,9 +300,6 @@
 @endsection
 
 @section('scripts')
-    <!-- jQuery, Bootstrap, Summernote JS (순서 중요!) -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.js"></script>
+    <x-backoffice-ckeditor-assets />
     <script src="{{ asset('js/backoffice/board-post-form.js') }}"></script>
 @endsection

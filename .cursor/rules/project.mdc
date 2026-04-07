@@ -10,6 +10,10 @@ alwaysApply: false
 - `00-global-principles.mdc`
 - `10-laravel-architecture.mdc`
 - `20-blade-and-assets.mdc`
+- `25-backoffice-ui-consistency.mdc`
+- `26-backoffice-naming-and-shared-crud.mdc`
+- `27-change-preflight-checklist.mdc`
+- `28-collaboration-ambiguity-gate.mdc`
 - `30-migrations-policy.mdc`
 - `40-dev-environment-ops.mdc`
 

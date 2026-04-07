@@ -18,10 +18,24 @@ class User extends Authenticatable
      * @var list<string>
      */
     protected $fillable = [
+        'join_type',
         'login_id',
         'name',
         'email',
         'password',
+        'phone_number',
+        'birth_date',
+        'address_postcode',
+        'address_base',
+        'address_detail',
+        'school_name',
+        'is_school_representative',
+        'email_marketing_consent',
+        'email_marketing_consent_at',
+        'kakao_marketing_consent',
+        'kakao_marketing_consent_at',
+        'sms_marketing_consent',
+        'terms_agreed_at',
         'role',
         'admin_group_id',
         'is_active',
@@ -29,6 +43,7 @@ class User extends Authenticatable
         'department',
         'position',
         'contact',
+        'withdrawn_at',
     ];
 
     /**
@@ -53,6 +68,14 @@ class User extends Authenticatable
             'password' => 'hashed',
             'is_active' => 'boolean',
             'last_login_at' => 'datetime',
+            'withdrawn_at' => 'datetime',
+            'is_school_representative' => 'boolean',
+            'email_marketing_consent' => 'boolean',
+            'kakao_marketing_consent' => 'boolean',
+            'sms_marketing_consent' => 'boolean',
+            'terms_agreed_at' => 'datetime',
+            'email_marketing_consent_at' => 'datetime',
+            'kakao_marketing_consent_at' => 'datetime',
         ];
     }
 
@@ -94,6 +117,89 @@ class User extends Authenticatable
     public function scopeActive($query)
     {
         return $query->where('is_active', true);
+    }
+
+    /**
+     * 탈퇴하지 않은 사용자만 조회하는 스코프
+     */
+    public function scopeNotWithdrawn($query)
+    {
+        return $query->whereNull('withdrawn_at');
+    }
+
+    /**
+     * 탈퇴한 사용자만 조회하는 스코프
+     */
+    public function scopeWithdrawn($query)
+    {
+        return $query->whereNotNull('withdrawn_at');
+    }
+
+    public function scopeByJoinType($query, $joinType)
+    {
+        if ($joinType && $joinType !== '전체') {
+            return $query->where('join_type', $joinType);
+        }
+
+        return $query;
+    }
+
+    public function scopeSearch($query, $searchType, $searchTerm)
+    {
+        if (!$searchTerm) {
+            return $query;
+        }
+
+        if (!$searchType || $searchType === '전체') {
+            return $query->where(function ($q) use ($searchTerm) {
+                $term = '%' . $searchTerm . '%';
+                $q->where('login_id', 'like', $term)
+                    ->orWhere('name', 'like', $term)
+                    ->orWhere('phone_number', 'like', $term);
+            });
+        }
+
+        return match ($searchType) {
+            '이름' => $query->where('name', 'like', '%' . $searchTerm . '%'),
+            '학교명' => $query->where('school_name', 'like', '%' . $searchTerm . '%'),
+            '이메일주소' => $query->where('email', 'like', '%' . $searchTerm . '%'),
+            '휴대폰', '휴대폰번호' => $query->where('phone_number', 'like', '%' . $searchTerm . '%'),
+            'ID' => $query->where('login_id', 'like', '%' . $searchTerm . '%'),
+            default => $query,
+        };
+    }
+
+    public function scopeByJoinDateRange($query, $startDate = null, $endDate = null)
+    {
+        if ($startDate) {
+            $query->whereDate('created_at', '>=', $startDate);
+        }
+        if ($endDate) {
+            $query->whereDate('created_at', '<=', $endDate);
+        }
+
+        return $query;
+    }
+
+    public function scopeByWithdrawalDateRange($query, $startDate = null, $endDate = null)
+    {
+        if ($startDate) {
+            $query->whereDate('withdrawn_at', '>=', $startDate);
+        }
+        if ($endDate) {
+            $query->whereDate('withdrawn_at', '<=', $endDate);
+        }
+
+        return $query;
+    }
+
+    public static function normalizePhone(?string $phone): string
+    {
+        if ($phone === null || $phone === '') {
+            return '';
+        }
+
+        return preg_replace('/\D/', '', $phone);
     }
 
     /**

@@ -22,6 +22,7 @@ class UserService
     public function getAllUsers()
     {
         return User::whereNotIn('role', ['super_admin', 'admin'])
+            ->whereNull('withdrawn_at')
             ->latest()
             ->paginate(15);
     }
@@ -31,7 +32,8 @@ class UserService
      */
     public function getUsersWithFilters(\Illuminate\Http\Request $request)
     {
-        $query = User::whereNotIn('role', ['super_admin', 'admin']);
+        $query = User::whereNotIn('role', ['super_admin', 'admin'])
+            ->whereNull('withdrawn_at');
         
         // 이름 검색
         if ($request->filled('name')) {
@@ -136,6 +138,7 @@ class UserService
             return false;
         }
 
-        return $user->delete();
+        return $user->update(['withdrawn_at' => now()]);
     }
+
 }

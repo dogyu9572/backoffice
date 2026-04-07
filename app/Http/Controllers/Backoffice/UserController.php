@@ -23,8 +23,7 @@ class UserController extends BaseController
      */
     public function index(Request $request)
     {
-        $users = $this->userService->getUsersWithFilters($request);
-        return view('backoffice.users.index', compact('users'));
+        return redirect()->route('backoffice.members.index');
     }
 
     /**
@@ -82,6 +81,7 @@ class UserController extends BaseController
         $this->userService->deleteUser($user);
         
         return redirect()->route('backoffice.users.index')
-            ->with('success', '회원이 삭제되었습니다.');
+            ->with('success', '회원이 탈퇴 처리되었습니다.');
     }
+
 }

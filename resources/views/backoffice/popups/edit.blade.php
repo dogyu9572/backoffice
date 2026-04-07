@@ -4,9 +4,6 @@
 
 @section('styles')
     <link rel="stylesheet" href="{{ asset('css/backoffice/popups.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/backoffice/summernote-custom.css') }}">
-    <!-- Summernote CSS (Bootstrap 기반, 완전 무료) -->
-    <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.css" rel="stylesheet">
 @endsection
 
 @section('content')
@@ -245,7 +242,7 @@
                             <div class="board-form-col board-form-col-12">
                                 <div class="board-form-group">
                                     <label for="popup_content" class="board-form-label">HTML 콘텐츠</label>
-                                    <textarea class="board-form-control summernote-editor @error('popup_content') is-invalid @enderror" 
+                                    <textarea class="board-form-control @error('popup_content') is-invalid @enderror" data-backoffice-ckeditor data-source-editing="true"
                                               id="popup_content" name="popup_content" rows="10" placeholder="HTML 콘텐츠를 입력하세요">{{ old('popup_content', $popup->popup_content) }}</textarea>
                                     @error('popup_content')
                                         <div class="invalid-feedback">{{ $message }}</div>
@@ -302,9 +299,6 @@
 @endsection
 
 @section('scripts')
-    <!-- jQuery, Bootstrap, Summernote JS (순서 중요!) -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.js"></script>
+    <x-backoffice-ckeditor-assets />
     <script src="{{ asset('js/backoffice/popups.js') }}"></script>
 @endsection
