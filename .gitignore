@@ -23,14 +23,7 @@ Thumbs.db
 
 # IDE 및 에디터 관련
 .cursor-server/
-# Cursor: 팀 공유용 rules/skills(및 subagents 문서)만 Git에 포함, 나머지는 로컬 전용
-.cursor/*
-!.cursor/rules/
-!.cursor/rules/**
-!.cursor/skills/
-!.cursor/skills/**
-!.cursor/subagents/
-!.cursor/subagents/**
+# .cursor는 무시하지 않음 — rules/skills 등은 저장소에 포함 (로컬 전용 파일 생기면 여기에만 추가)
 .config/
 .local/
 .ssh/
