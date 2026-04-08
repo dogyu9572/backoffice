@@ -1,0 +1,26 @@
+---
+description: 백오피스 공용 네이밍(bo-*) 및 공용 CRUD 레이아웃 규칙
+globs: "{resources/views/backoffice/**/*.blade.php,public/css/backoffice/**/*.css,public/js/backoffice/**/*.js}"
+alwaysApply: true
+---
+
+# 백오피스 네이밍 및 공용 CRUD 규칙
+
+## 네이밍 원칙
+- 신규 백오피스 화면의 클래스/셀렉터 접두사는 `bo-`를 기본으로 사용한다.
+- 도메인 종속 접두사(`member-*`, `post-*`, `popup-*`)를 공용 레이아웃 클래스에 사용하지 않는다.
+- 화면 고유 동작이 필요한 경우에만 `bo-<menu>-*` 형태로 확장한다.
+
+## 공용 레이아웃 원칙
+- 신규 메뉴는 `members` 화면 구조를 기준으로 CRUD 레이아웃 패턴을 재사용한다.
+- 공용 스타일은 `public/css/backoffice/backoffice-crud.css`를 우선 사용한다.
+- 테이블 선택 체크박스는 `bo-row-checkbox`, 인라인 폼은 `bo-inline-form`을 기본으로 사용한다.
+
+## 금지 항목
+- 신규 메뉴에서 `member-*` 네이밍 재사용 금지
+- 동일한 UI 블록을 메뉴별로 복붙해 별도 마크업/클래스로 분기하는 방식 금지
+
+## 작업 절차
+1. 새 화면 작업 전 공용 클래스(`bo-*`)로 표현 가능한지 먼저 확인한다.
+2. 공용으로 가능한 블록은 partial/component로 분리한다.
+3. 도메인 특화 항목만 메뉴 전용 클래스/JS로 분리한다.
