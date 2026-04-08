@@ -13,11 +13,18 @@ function initLoginIdCheck() {
     const loginIdInput = document.getElementById('login_id');
     const checkBtn = document.getElementById('check-login-id-btn');
     const messageDiv = document.getElementById('login-id-message');
+    const verifiedHidden = document.getElementById('login_id_verified');
 
     if (!loginIdInput || !checkBtn || !messageDiv) return;
 
     let isChecked = false;
     let lastCheckedValue = '';
+
+    function setVerified(flag) {
+        if (verifiedHidden) {
+            verifiedHidden.value = flag ? '1' : '0';
+        }
+    }
 
     // 중복 체크 버튼 클릭
     checkBtn.addEventListener('click', function() {
@@ -40,6 +47,7 @@ function initLoginIdCheck() {
     loginIdInput.addEventListener('input', function() {
         if (isChecked && lastCheckedValue !== this.value.trim()) {
             isChecked = false;
+            setVerified(false);
             clearMessage();
         }
     });
@@ -68,9 +76,11 @@ function initLoginIdCheck() {
             if (data.available) {
                 isChecked = true;
                 lastCheckedValue = loginId;
+                setVerified(true);
                 showMessage(data.message, 'success');
             } else {
                 isChecked = false;
+                setVerified(false);
                 showMessage(data.message, 'error');
             }
         })
@@ -104,17 +114,20 @@ function initLoginIdCheck() {
         messageDiv.style.color = '';
     }
 
-    // 폼 제출 시 체크 여부 확인
+    // 폼 제출 시: 아이디 중복 확인 필수 (생성 폼에 hidden 이 있을 때만)
     const adminForm = document.getElementById('adminForm');
-    if (adminForm) {
+    if (adminForm && verifiedHidden) {
         adminForm.addEventListener('submit', function(e) {
             const loginId = loginIdInput.value.trim();
-            
-            if (loginId && (!isChecked || lastCheckedValue !== loginId)) {
-                if (!confirm('아이디 중복 확인을 하지 않았습니다. 계속 진행하시겠습니까?')) {
-                    e.preventDefault();
-                    return false;
-                }
+
+            if (!loginId) {
+                return;
+            }
+
+            if (!isChecked || lastCheckedValue !== loginId) {
+                e.preventDefault();
+                alert('아이디 중복 확인을 완료한 뒤 저장해주세요.');
+                return false;
             }
         });
     }

@@ -3,19 +3,21 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
+use Illuminate\Database\Eloquent\Model;
 use App\Models\AdminMenu;
 
 class AdminMenuSeeder extends Seeder
 {
     /**
      * 관리자 메뉴 데이터를 시드합니다.
+     * (admin_menus 테이블 현행 데이터 기준 — 2026-04-08 동기화)
      */
     public function run(): void
     {
-        // 기존 데이터 삭제
         AdminMenu::query()->delete();
 
-        // 현재 DB 데이터로 최신화된 메뉴 구성
+        Model::unguard();
+
         $menus = [
             [
                 'id' => 1,
@@ -23,10 +25,10 @@ class AdminMenuSeeder extends Seeder
                 'name' => '대시보드',
                 'url' => '/backoffice',
                 'icon' => 'fa-tachometer-alt',
-                'order' => 2,
+                'order' => 1,
                 'is_active' => 1,
                 'created_at' => '2025-05-05 09:33:08',
-                'updated_at' => '2025-12-18 08:46:23',
+                'updated_at' => '2026-04-07 14:19:07',
                 'permission_key' => null,
             ],
             [
@@ -35,10 +37,10 @@ class AdminMenuSeeder extends Seeder
                 'name' => '시스템 관리',
                 'url' => null,
                 'icon' => 'fa-cogs',
-                'order' => 3,
+                'order' => 2,
                 'is_active' => 1,
                 'created_at' => '2025-05-05 09:33:08',
-                'updated_at' => '2025-12-18 08:46:23',
+                'updated_at' => '2026-04-07 14:19:07',
                 'permission_key' => null,
             ],
             [
@@ -71,10 +73,10 @@ class AdminMenuSeeder extends Seeder
                 'name' => '기본설정',
                 'url' => null,
                 'icon' => 'fa-file-alt',
-                'order' => 4,
+                'order' => 3,
                 'is_active' => 1,
                 'created_at' => '2025-05-05 09:33:08',
-                'updated_at' => '2025-12-18 08:46:23',
+                'updated_at' => '2026-04-07 14:19:07',
                 'permission_key' => null,
             ],
             [
@@ -117,12 +119,12 @@ class AdminMenuSeeder extends Seeder
                 'id' => 10,
                 'parent_id' => 19,
                 'name' => '공지사항',
-                'url' => '/backoffice/board-posts/notices2',
+                'url' => '/backoffice/board-posts/notices',
                 'icon' => null,
                 'order' => 1,
                 'is_active' => 1,
                 'created_at' => '2025-05-06 12:44:51',
-                'updated_at' => '2025-10-26 14:02:48',
+                'updated_at' => '2026-01-20 08:18:43',
                 'permission_key' => null,
             ],
             [
@@ -194,7 +196,7 @@ class AdminMenuSeeder extends Seeder
                 'order' => 7,
                 'is_active' => 1,
                 'created_at' => '2025-09-23 07:21:13',
-                'updated_at' => '2025-09-23 07:22:12',
+                'updated_at' => '2025-12-18 08:46:23',
                 'permission_key' => null,
             ],
             [
@@ -231,18 +233,6 @@ class AdminMenuSeeder extends Seeder
                 'is_active' => 1,
                 'created_at' => '2025-10-09 01:02:41',
                 'updated_at' => '2025-10-18 02:01:41',
-                'permission_key' => null,
-            ],
-            [
-                'id' => 40,
-                'parent_id' => 19,
-                'name' => '싱글',
-                'url' => '/backoffice/board-posts/singles2',
-                'icon' => null,
-                'order' => 0,
-                'is_active' => 1,
-                'created_at' => '2025-10-26 14:20:31',
-                'updated_at' => '2025-10-26 14:48:02',
                 'permission_key' => null,
             ],
             [
@@ -293,24 +283,60 @@ class AdminMenuSeeder extends Seeder
                 'updated_at' => '2025-12-18 08:47:27',
                 'permission_key' => null,
             ],
+            [
+                'id' => 45,
+                'parent_id' => null,
+                'name' => '회원 관리',
+                'url' => null,
+                'icon' => 'fa-users',
+                'order' => 4,
+                'is_active' => 1,
+                'created_at' => '2026-04-07 14:19:00',
+                'updated_at' => '2026-04-07 14:19:07',
+                'permission_key' => null,
+            ],
+            [
+                'id' => 46,
+                'parent_id' => 45,
+                'name' => '회원 목록',
+                'url' => '/backoffice/members',
+                'icon' => null,
+                'order' => 1,
+                'is_active' => 1,
+                'created_at' => '2026-04-07 14:22:42',
+                'updated_at' => '2026-04-07 14:40:26',
+                'permission_key' => null,
+            ],
+            [
+                'id' => 47,
+                'parent_id' => 45,
+                'name' => '탈퇴 회원 목록',
+                'url' => '/backoffice/withdrawn',
+                'icon' => null,
+                'order' => 2,
+                'is_active' => 1,
+                'created_at' => '2026-04-07 14:40:19',
+                'updated_at' => '2026-04-07 14:40:26',
+                'permission_key' => null,
+            ],
         ];
 
-        // parent_id가 null인 메뉴들을 먼저 생성
-        $parentMenus = array_filter($menus, function($menu) {
+        $parentMenus = array_filter($menus, static function ($menu) {
             return $menu['parent_id'] === null;
         });
-        
+
         foreach ($parentMenus as $menu) {
             AdminMenu::create($menu);
         }
-        
-        // 그 다음에 자식 메뉴들을 생성
-        $childMenus = array_filter($menus, function($menu) {
+
+        $childMenus = array_filter($menus, static function ($menu) {
             return $menu['parent_id'] !== null;
         });
-        
+
         foreach ($childMenus as $menu) {
             AdminMenu::create($menu);
         }
+
+        Model::reguard();
     }
 }

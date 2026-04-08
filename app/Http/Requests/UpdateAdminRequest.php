@@ -41,7 +41,7 @@ class UpdateAdminRequest extends FormRequest
                 'email',
                 Rule::unique('users')->ignore($adminId)
             ],
-            'password' => 'nullable|string|min:8|confirmed',
+            'password' => 'nullable|string|min:4|confirmed',
             'department' => 'nullable|string|max:255',
             'position' => 'nullable|string|max:255',
             'contact' => 'nullable|string|max:50',

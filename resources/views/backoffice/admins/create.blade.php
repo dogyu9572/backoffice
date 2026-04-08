@@ -30,7 +30,8 @@
         <div class="board-card-body">
             <form id="adminForm" action="{{ route('backoffice.admins.store') }}" method="POST">
                 @csrf
-                
+                <input type="hidden" name="login_id_verified" id="login_id_verified" value="0">
+
                 <div class="form-section">
                     <h3>기본 정보</h3>
                     <div class="form-grid">
