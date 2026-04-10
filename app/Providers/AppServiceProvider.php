@@ -7,8 +7,6 @@ use App\Models\Setting;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Request;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\URL;
 
@@ -90,18 +88,5 @@ class AppServiceProvider extends ServiceProvider
             });
         }
 
-        // 쿼리 로깅 활성화 (디버깅용)
-        if (config('app.debug')) {
-            DB::listen(function ($query) {
-                Log::info(
-                    'SQL 쿼리 실행',
-                    [
-                        'sql' => $query->sql,
-                        'bindings' => $query->bindings,
-                        'time' => $query->time
-                    ]
-                );
-            });
-        }
     }
 }
