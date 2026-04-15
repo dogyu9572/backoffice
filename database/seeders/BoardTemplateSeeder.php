@@ -64,9 +64,9 @@ class BoardTemplateSeeder extends Seeder
                 'field_config' => [
                     'title' => ['enabled' => true, 'required' => true, 'label' => '제목'],
                     'content' => ['enabled' => true, 'required' => true, 'label' => '내용'],
-                    'category' => ['enabled' => true, 'required' => false, 'label' => '카테고리'],
+                    'category' => ['enabled' => false, 'required' => false, 'label' => '카테고리'],
                     'author_name' => ['enabled' => true, 'required' => true, 'label' => '작성자'],
-                    'password' => ['enabled' => true, 'required' => false, 'label' => '비밀번호'],
+                    'password' => ['enabled' => false, 'required' => false, 'label' => '비밀번호'],
                     'attachments' => ['enabled' => true, 'required' => false, 'label' => '첨부파일'],
                     'thumbnail' => ['enabled' => true, 'required' => true, 'label' => '썸네일'],
                     'is_secret' => ['enabled' => false, 'required' => false, 'label' => '비밀글'],

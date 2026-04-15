@@ -226,7 +226,7 @@
                             <span class="required">*</span>
                         @endif
                     </label>
-                    <input type="text" class="board-form-control" id="author_name" name="author_name" value="{{ old('author_name', $post->author_name) }}" @if($board->isFieldRequired('author_name')) required @endif>
+                    <input type="text" class="board-form-control" id="author_name" name="author_name" value="{{ old('author_name', auth()->user()->name ?? $post->author_name) }}" @if($board->isFieldRequired('author_name')) required @endif>
                 </div>
                 @endif
 
@@ -302,21 +302,6 @@
                         @endif
                         
                         <div class="board-file-preview" id="filePreview"></div>
-                    </div>
-                </div>
-                @endif
-
-                @if($board->isFieldEnabled('is_active'))
-                <div class="board-form-group">
-                    <div class="board-checkbox-item">
-                        <input type="hidden" name="is_active" value="0">
-                        <input type="checkbox" 
-                               class="board-checkbox-input" 
-                               id="is_active" 
-                               name="is_active" 
-                               value="1" 
-                               @checked(old('is_active', $post->is_active ?? true))>
-                        <label for="is_active" class="board-form-label">게시물 노출</label>
                     </div>
                 </div>
                 @endif

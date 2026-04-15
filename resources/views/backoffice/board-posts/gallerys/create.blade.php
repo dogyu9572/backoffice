@@ -208,6 +208,21 @@
                     @endforeach
                 @endif
 
+                <div class="board-form-group">
+                    <label for="thumbnail" class="board-form-label">썸네일 이미지</label>
+                    <div class="board-file-upload">
+                        <div class="board-file-input-wrapper">
+                            <input type="file" class="board-file-input" id="thumbnail" name="thumbnail" accept=".jpg,.jpeg,.png,.gif">
+                            <div class="board-file-input-content">
+                                <i class="fas fa-image"></i>
+                                <span class="board-file-input-text">썸네일 이미지를 선택하거나 여기로 드래그하세요</span>
+                                <span class="board-file-input-subtext">JPG, PNG, GIF 파일만 가능 (최대 5MB)</span>
+                            </div>
+                        </div>
+                        <div class="board-file-preview" id="thumbnailPreview"></div>
+                    </div>
+                </div>
+
                 @if($board->isFieldEnabled('author_name'))
                 <div class="board-form-group">
                     <label for="author_name" class="board-form-label">
@@ -216,7 +231,7 @@
                             <span class="required">*</span>
                         @endif
                     </label>
-                    <input type="text" class="board-form-control" id="author_name" name="author_name" value="{{ old('author_name') }}" @if($board->isFieldRequired('author_name')) required @endif>
+                    <input type="text" class="board-form-control" id="author_name" name="author_name" value="{{ old('author_name', auth()->user()->name ?? '') }}" @if($board->isFieldRequired('author_name')) required @endif>
                 </div>
                 @endif
 
@@ -272,6 +287,21 @@
                 </div>
                 @endif
 
+                @if($board->isFieldEnabled('is_active'))
+                <div class="board-form-group">
+                    <div class="board-checkbox-item">
+                        <input type="hidden" name="is_active" value="0">
+                        <input type="checkbox" 
+                               class="board-checkbox-input" 
+                               id="is_active" 
+                               name="is_active" 
+                               value="1" 
+                               @checked(old('is_active', true))>
+                        <label for="is_active" class="board-form-label">게시물 노출</label>
+                    </div>
+                </div>
+                @endif
+
                 <div class="board-form-actions">
                     <button type="submit" class="btn btn-primary">
                         <i class="fas fa-save"></i> 저장
@@ -287,4 +317,5 @@
 @section('scripts')
     <x-backoffice-ckeditor-assets />
     <script src="{{ asset('js/backoffice/board-post-form.js') }}"></script>
+    <script src="{{ asset('js/backoffice/board-posts.js') }}"></script>
 @endsection

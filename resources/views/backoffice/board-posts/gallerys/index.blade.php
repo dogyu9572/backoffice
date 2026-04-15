@@ -47,10 +47,8 @@
                                 <label for="search_type" class="filter-label">검색 구분</label>
                                 <select id="search_type" name="search_type" class="filter-select">
                                     <option value="">전체</option>
-                                    <option value="title" @selected(request('search_type') == 'title')>제목
-                                    </option>
-                                    <option value="content" @selected(request('search_type') == 'content')>내용
-                                    </option>
+                                    <option value="title" @selected(request('search_type') == 'title')>제목</option>
+                                    <option value="content" @selected(request('search_type') == 'content')>내용</option>
                                 </select>
                             </div>
                             <div class="filter-group">
@@ -106,7 +104,7 @@
                                     <th class="w5">순서</th>
                                 @endif
                                 <th class="w5">번호</th>
-                                <th class="w10">구분</th>
+                                <th class="w10">썸네일</th>
                                 <th>제목</th>
                                 <th class="w10">작성자</th>
                                 <th class="w10">작성일</th>
@@ -135,7 +133,15 @@
                                         @endif
                                     </td>
                                     <td>
-                                        <span class="status-badge status-general">일반</span>
+                                        @if($post->thumbnail)
+                                            <img src="{{ asset('storage/' . $post->thumbnail) }}" 
+                                                 alt="썸네일" 
+                                                 class="gallery-thumbnail-small"
+                                                 onerror="this.style.display='none'; this.nextElementSibling.style.display='inline';">
+                                            <i class="fas fa-image text-muted" style="display: none;"></i>
+                                        @else
+                                            <i class="fas fa-image text-muted"></i>
+                                        @endif
                                     </td>
                                     <td>
                                         {{ $post->title }}

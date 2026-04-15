@@ -1,6 +1,6 @@
 @extends('backoffice.layouts.app')
 
-@section('title', $board->name ?? '게시판')
+@section('title', ($board->name ?? '게시판') . ' - 게시글 수정')
 
 @section('styles')
     
@@ -33,9 +33,27 @@
                 @if($board->isNoticeEnabled())
                 <div class="board-form-group">
                     <div class="board-checkbox-item">
-                        <input type="checkbox" class="board-checkbox-input" id="is_notice" name="is_notice" value="1" @checked($post->is_notice)>
+                        <input type="checkbox" class="board-checkbox-input" id="is_notice" name="is_notice" value="1" @checked(old('is_notice', $post->is_notice) == '1')>
                         <label for="is_notice" class="board-form-label">공지 등록</label>
                     </div>                    
+                </div>
+                @endif
+
+                @if($board->isFieldEnabled('is_active'))
+                <div class="board-form-group">
+                    <div class="board-checkbox-item">
+                        <input type="hidden" name="is_active" value="0">
+                        <input type="checkbox" 
+                               class="board-checkbox-input" 
+                               id="is_active" 
+                               name="is_active" 
+                               value="1" 
+                               @checked(old('is_active', $post->is_active ?? true))>
+                        <label for="is_active" class="board-form-label">
+                            <i class="fas fa-eye"></i> 게시물 노출
+                        </label>
+                    </div>
+                    <small class="board-form-text">체크하면 게시물이 목록에 노출됩니다.</small>
                 </div>
                 @endif
 
@@ -66,7 +84,7 @@
                             <span class="required">*</span>
                         @endif
                     </label>
-                    <input type="text" class="board-form-control" id="title" name="title" value="{{ $post->title }}" @if($board->isFieldRequired('title')) required @endif>
+                    <input type="text" class="board-form-control" id="title" name="title" value="{{ old('title', $post->title) }}" @if($board->isFieldRequired('title')) required @endif>
                 </div>
                 @endif
 
@@ -78,7 +96,7 @@
                             <span class="required">*</span>
                         @endif
                     </label>
-                    <textarea class="board-form-control board-form-textarea" id="content" name="content" rows="15" data-backoffice-ckeditor data-source-editing="true" @if($board->isFieldRequired('content')) required @endif>{{ $post->content }}</textarea>
+                    <textarea class="board-form-control board-form-textarea" id="content" name="content" rows="15" data-backoffice-ckeditor data-source-editing="true" @if($board->isFieldRequired('content')) required @endif>{{ old('content', $post->content) }}</textarea>
                 </div>
                 @endif
 
@@ -218,6 +236,31 @@
                     @endforeach
                 @endif
 
+                <div class="board-form-group">
+                    <label for="thumbnail" class="board-form-label">썸네일 이미지</label>
+                    <div class="board-file-upload">
+                        <div class="board-file-input-wrapper">
+                            <input type="file" class="board-file-input" id="thumbnail" name="thumbnail" accept=".jpg,.jpeg,.png,.gif">
+                            <div class="board-file-input-content">
+                                <i class="fas fa-image"></i>
+                                <span class="board-file-input-text">썸네일 이미지를 선택하거나 여기로 드래그하세요</span>
+                                <span class="board-file-input-subtext">JPG, PNG, GIF 파일만 가능 (최대 5MB)</span>
+                            </div>
+                        </div>
+                        @if($post->thumbnail)
+                            <input type="hidden" name="existing_thumbnail" value="{{ $post->thumbnail }}">
+                            <div class="board-file-preview" id="thumbnailPreview">
+                                <img src="{{ asset('storage/' . $post->thumbnail) }}" alt="현재 썸네일" class="thumbnail-preview">
+                                <button type="button" class="btn btn-sm btn-outline-danger mt-2" onclick="removeThumbnail()">
+                                    <i class="fas fa-trash"></i> 썸네일 제거
+                                </button>
+                            </div>
+                        @else
+                            <div class="board-file-preview" id="thumbnailPreview"></div>
+                        @endif
+                    </div>
+                </div>
+
                 @if($board->isFieldEnabled('author_name'))
                 <div class="board-form-group">
                     <label for="author_name" class="board-form-label">
@@ -226,7 +269,7 @@
                             <span class="required">*</span>
                         @endif
                     </label>
-                    <input type="text" class="board-form-control" id="author_name" name="author_name" value="{{ old('author_name', $post->author_name) }}" @if($board->isFieldRequired('author_name')) required @endif>
+                    <input type="text" class="board-form-control" id="author_name" name="author_name" value="{{ old('author_name', auth()->user()->name ?? $post->author_name) }}" @if($board->isFieldRequired('author_name')) required @endif>
                 </div>
                 @endif
 
@@ -306,9 +349,24 @@
                 </div>
                 @endif
 
+                @if($board->isFieldEnabled('is_active'))
+                <div class="board-form-group">
+                    <div class="board-checkbox-item">
+                        <input type="hidden" name="is_active" value="0">
+                        <input type="checkbox" 
+                               class="board-checkbox-input" 
+                               id="is_active" 
+                               name="is_active" 
+                               value="1" 
+                               @checked(old('is_active', $post->is_active ?? true))>
+                        <label for="is_active" class="board-form-label">게시물 노출</label>
+                    </div>
+                </div>
+                @endif
+
                 <div class="board-form-actions">
                     <button type="submit" class="btn btn-primary">
-                        <i class="fas fa-save"></i> 저장
+                        <i class="fas fa-save"></i> 수정
                     </button>
                     <a href="{{ route('backoffice.board-posts.index', $board->slug ?? 'notice') }}" class="btn btn-secondary">취소</a>
                 </div>
@@ -321,4 +379,5 @@
 @section('scripts')
     <x-backoffice-ckeditor-assets />
     <script src="{{ asset('js/backoffice/board-post-form.js') }}"></script>
+    <script src="{{ asset('js/backoffice/board-posts.js') }}"></script>
 @endsection
