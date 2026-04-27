@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Backoffice;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Models\UserAccessLog;
+use App\Support\ClientIpResolver;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -15,6 +16,9 @@ class AuthController extends Controller
      */
     public function showLoginForm()
     {
+        // 로그인 페이지 진입 시 CSRF 토큰을 새로 발급해 만료 이슈를 완화
+        request()->session()->regenerateToken();
+
         return view('backoffice.login');
     }
 
@@ -63,7 +67,7 @@ class AuthController extends Controller
         UserAccessLog::create([
             'user_id' => $user->id,
             'name' => $user->name,
-            'ip_address' => $request->ip(),
+            'ip_address' => ClientIpResolver::resolve($request),
             'user_agent' => $request->userAgent(),
             'referer' => $request->header('referer'),
             'login_at' => now(),

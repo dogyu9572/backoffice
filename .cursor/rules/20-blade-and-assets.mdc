@@ -41,3 +41,12 @@ alwaysApply: true
 - Blade 변경 후 `style=""`, `onclick=""`, `<style>`, `<script>` 인라인 코드가 남아있는지 확인한다.
 - 한 줄에 과도하게 몰린 태그/속성은 줄바꿈과 들여쓰기로 정렬해 가독성을 보장한다.
 - create/edit, index/detail처럼 유사 화면은 공통 partial/component로 중복을 우선 제거한다.
+
+## 정적 검색 기반 종료 체크 (필수)
+- 작업 종료 전에 아래 패턴을 정적 검색으로 확인하고, 결과가 있으면 외부 파일 분리 후 재확인한다.
+  - `style=`
+  - `onclick=`
+  - `<style`
+  - `<script`
+- 권장 검색 범위: `resources/views/**/*.blade.php`
+- 검사 결과 보고 시 `검사 패턴`, `미해결 건수`, `예외 사유(있다면)`를 함께 남긴다.

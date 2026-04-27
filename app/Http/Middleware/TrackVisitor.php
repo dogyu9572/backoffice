@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 use App\Models\VisitorLog;
 use App\Models\DailyVisitorStat;
+use App\Support\ClientIpResolver;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
@@ -38,7 +39,7 @@ class TrackVisitor
      */
     private function recordVisitor(Request $request): void
     {
-        $ipAddress = $request->ip();
+        $ipAddress = ClientIpResolver::resolve($request);
         $sessionId = $request->hasSession() ? $request->session()->getId() : null;
         $now = now();
         $today = $now->format('Y-m-d');

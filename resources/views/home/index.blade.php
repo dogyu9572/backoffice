@@ -73,6 +73,16 @@
             {{-- 일반팝업 (새창) --}}
             <script>
                 document.addEventListener('DOMContentLoaded', function() {
+                    const cookieName = 'popup_hide_{{ $popup->id }}';
+                    const hasHideCookie = document.cookie
+                        .split('; ')
+                        .some((cookie) => cookie.startsWith(cookieName + '='));
+
+                    // "1일 동안 보지 않음" 쿠키가 있으면 새창을 열지 않음
+                    if (hasHideCookie) {
+                        return;
+                    }
+
                     const popupUrl = '{{ route("popup.show", $popup->id) }}';
                     const popupFeatures = 'width={{ $popup->width }},height={{ $popup->height }},left={{ $popup->position_left ?? 100 }},top={{ $popup->position_top ?? 100 }},scrollbars=yes,resizable=yes,menubar=no,toolbar=no,location=no,status=no';
                     window.open(popupUrl, 'popup_{{ $popup->id }}', popupFeatures);

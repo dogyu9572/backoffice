@@ -49,14 +49,26 @@
 	                @if($menu->url)
 	                    <a href="{{ is_string($menu->url) ? url($menu->url) : $menu->url }}">
 	                        @if($menu->icon)
-	                            <i class="fa {{ $menu->icon }}"></i>
+                                @php
+                                    $menuIconClass = trim($menu->icon);
+                                    if (\Illuminate\Support\Str::startsWith($menuIconClass, 'fa-')) {
+                                        $menuIconClass = 'fas ' . $menuIconClass;
+                                    }
+                                @endphp
+	                            <i class="{{ $menuIconClass }}"></i>
 	                        @endif
 	                        <span>{{ $menu->name }}</span>
 	                    </a>
 	                @else
 	                    <a href="#" class="has-submenu {{ $isActive ? 'open' : '' }}">
 	                        @if($menu->icon)
-	                            <i class="fa {{ $menu->icon }}"></i>
+                                @php
+                                    $parentMenuIconClass = trim($menu->icon);
+                                    if (\Illuminate\Support\Str::startsWith($parentMenuIconClass, 'fa-')) {
+                                        $parentMenuIconClass = 'fas ' . $parentMenuIconClass;
+                                    }
+                                @endphp
+	                            <i class="{{ $parentMenuIconClass }}"></i>
 	                        @endif
 	                        <span>{{ $menu->name }}</span>
 	                        <i class="fa fa-angle-down submenu-icon"></i>
@@ -72,7 +84,13 @@
 	                                    <li class="{{ $isChildActive ? 'active' : '' }}">
 	                                        <a href="{{ is_string($child->url) ? url($child->url) : $child->url }}">
 	                                            @if($child->icon)
-	                                                <i class="fa {{ $child->icon }}"></i>
+                                                    @php
+                                                        $childIconClass = trim($child->icon);
+                                                        if (\Illuminate\Support\Str::startsWith($childIconClass, 'fa-')) {
+                                                            $childIconClass = 'fas ' . $childIconClass;
+                                                        }
+                                                    @endphp
+	                                                <i class="{{ $childIconClass }}"></i>
 	                                            @endif
 	                                            <span>{{ $child->name }}</span>
 	                                        </a>

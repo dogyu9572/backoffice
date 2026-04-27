@@ -32,6 +32,8 @@ class BoardPostRequest extends FormRequest
             'is_active' => 'nullable|boolean',
             'author_name' => 'nullable|string|max:100',
             'password' => 'nullable|string|max:255',
+            'created_at' => 'nullable|date',
+            'view_count' => 'nullable|integer|min:0',
             'thumbnail' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:5120', // 5MB
             'attachments' => 'nullable|array',
             'attachments.*' => 'nullable|file|max:10240', // 10MB
@@ -136,6 +138,9 @@ class BoardPostRequest extends FormRequest
             'title.max' => '제목은 최대 255자까지 입력 가능합니다.',
             'content.required' => '내용은 필수 입력 항목입니다.',
             'category.max' => '카테고리는 최대 50자까지 입력 가능합니다.',
+            'created_at.date' => '등록일 형식이 올바르지 않습니다.',
+            'view_count.integer' => '조회수는 숫자만 입력 가능합니다.',
+            'view_count.min' => '조회수는 0 이상이어야 합니다.',
             'thumbnail.image' => '썸네일은 이미지 파일이어야 합니다.',
             'thumbnail.mimes' => '썸네일은 jpeg, png, jpg, gif 형식만 지원합니다.',
             'thumbnail.max' => '썸네일은 최대 5MB까지 업로드 가능합니다.',

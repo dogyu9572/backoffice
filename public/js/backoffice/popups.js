@@ -54,14 +54,50 @@ function savePopupOrder() {
 function togglePeriodFields() {
     const periodFields = document.getElementById('period_fields');
     const radioButtons = document.querySelectorAll('input[name="use_period"]');
+    const startDateInput = document.getElementById('start_date');
+    const endDateInput = document.getElementById('end_date');
     if (!periodFields || radioButtons.length === 0) return;
 
     const checkedRadio = document.querySelector('input[name="use_period"]:checked');
-    periodFields.style.display = checkedRadio && checkedRadio.value === '1' ? 'block' : 'none';
+    const isUsePeriod = checkedRadio && checkedRadio.value === '1';
+    periodFields.style.display = isUsePeriod ? 'block' : 'none';
+
+    if (startDateInput) {
+        startDateInput.required = !!isUsePeriod;
+    }
+    if (endDateInput) {
+        endDateInput.required = !!isUsePeriod;
+    }
+
+    if (!isUsePeriod) {
+        if (startDateInput) {
+            startDateInput.value = '';
+        }
+        if (endDateInput) {
+            endDateInput.value = '';
+        }
+    }
 
     radioButtons.forEach((radio) => {
         radio.addEventListener('change', function () {
-            periodFields.style.display = this.value === '1' ? 'block' : 'none';
+            const enabled = this.value === '1';
+            periodFields.style.display = enabled ? 'block' : 'none';
+
+            if (startDateInput) {
+                startDateInput.required = enabled;
+            }
+            if (endDateInput) {
+                endDateInput.required = enabled;
+            }
+
+            if (!enabled) {
+                if (startDateInput) {
+                    startDateInput.value = '';
+                }
+                if (endDateInput) {
+                    endDateInput.value = '';
+                }
+            }
         });
     });
 }

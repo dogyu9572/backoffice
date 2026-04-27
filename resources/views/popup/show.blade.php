@@ -130,11 +130,19 @@
                 // 쿠키 설정 (자정까지)
                 const expires = new Date();
                 expires.setHours(23, 59, 59, 999);
-                document.cookie = 'popup_hide_{{ $popup->id }}=true; expires=' + expires.toUTCString() + '; path=/';
+                document.cookie = 'popup_hide_{{ $popup->id }}=true; expires=' + expires.toUTCString() + '; path=/; SameSite=Lax';
             }
             
             // 팝업 창 닫기
             window.close();
+
+            // 일부 브라우저/직접 접근 탭에서는 close가 막힐 수 있어 폴백 처리
+            setTimeout(function() {
+                if (!window.closed) {
+                    window.location.href = 'about:blank';
+                    window.close();
+                }
+            }, 50);
         }
         
         // ESC 키로 팝업 닫기

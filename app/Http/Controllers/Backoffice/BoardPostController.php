@@ -8,6 +8,7 @@ use App\Services\Backoffice\BoardPostService;
 use App\Models\Board;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 class BoardPostController extends Controller
 {
@@ -160,8 +161,29 @@ class BoardPostController extends Controller
         // 단일페이지 모드인 경우 특별한 메시지
         $message = $board->is_single_page ? '내용이 수정되었습니다.' : '게시글이 수정되었습니다.';
         
-        return redirect()->route('backoffice.board-posts.index', $slug)
+        return redirect($this->resolveListReturnUrl($request, $slug))
             ->with('success', $message);
+    }
+
+    /**
+     * 목록 복귀 URL을 안전하게 결정
+     */
+    private function resolveListReturnUrl(Request $request, string $slug): string
+    {
+        $defaultUrl = route('backoffice.board-posts.index', $slug);
+        $returnUrl = (string) $request->input('return_url', '');
+
+        if ($returnUrl === '') {
+            return $defaultUrl;
+        }
+
+        // 외부 리다이렉트 방지: 현재 도메인 + 해당 게시판 목록 경로만 허용
+        $allowedPrefix = url('/backoffice/board-posts/' . $slug);
+        if (!Str::startsWith($returnUrl, $allowedPrefix)) {
+            return $defaultUrl;
+        }
+
+        return $returnUrl;
     }
 
     /**

@@ -97,6 +97,7 @@
                 </div>
                 @endif
 
+
                 <!-- 커스텀 필드 입력 폼 -->
                 @if($board->custom_fields_config && count($board->custom_fields_config) > 0)
                     @foreach($board->custom_fields_config as $fieldConfig)
@@ -271,6 +272,16 @@
                     </div>
                 </div>
                 @endif
+
+                <div class="board-form-group">
+                    <label for="created_at" class="board-form-label">등록일시</label>
+                    <input type="datetime-local" class="board-form-control" id="created_at" name="created_at" value="{{ old('created_at', now()->format('Y-m-d\TH:i')) }}">
+                </div>
+
+                <div class="board-form-group">
+                    <label for="view_count" class="board-form-label">조회수</label>
+                    <input type="number" class="board-form-control" id="view_count" name="view_count" value="{{ old('view_count', 0) }}" min="0">
+                </div>
 
                 <div class="board-form-actions">
                     <button type="submit" class="btn btn-primary">

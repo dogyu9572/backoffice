@@ -364,6 +364,16 @@
                 </div>
                 @endif
 
+                <div class="board-form-group">
+                    <label for="created_at" class="board-form-label">등록일시</label>
+                    <input type="datetime-local" class="board-form-control" id="created_at" name="created_at" value="{{ old('created_at', ($post->created_at ? \Illuminate\Support\Carbon::parse($post->created_at)->format('Y-m-d\TH:i') : now()->format('Y-m-d\TH:i'))) }}">
+                </div>
+
+                <div class="board-form-group">
+                    <label for="view_count" class="board-form-label">조회수</label>
+                    <input type="number" class="board-form-control" id="view_count" name="view_count" value="{{ old('view_count', $post->view_count ?? 0) }}" min="0">
+                </div>
+
                 <div class="board-form-actions">
                     <button type="submit" class="btn btn-primary">
                         <i class="fas fa-save"></i> 수정

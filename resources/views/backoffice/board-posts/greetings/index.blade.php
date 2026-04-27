@@ -144,7 +144,7 @@
                                     <td>{{ $post->created_at->format('Y-m-d') }}</td>
                                     <td>
                                         <div class="board-btn-group">
-                                            <a href="{{ route('backoffice.board-posts.edit', [$board->slug ?? 'notice', $post->id]) }}"
+                                            <a href="{{ route('backoffice.board-posts.edit', [$board->slug ?? 'notice', $post->id, 'return_url' => request()->fullUrl()]) }}"
                                                 class="btn btn-primary btn-sm">
                                                 <i class="fas fa-edit"></i> 수정
                                             </a>

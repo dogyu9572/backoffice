@@ -145,9 +145,11 @@ class BoardPostService
             'thumbnail' => $this->handleThumbnail($request, $slug),
             'attachments' => json_encode($this->handleAttachments($request, $slug)),
             'custom_fields' => $this->getCustomFieldsJson($request, $board),
-            'view_count' => 0,
+            'view_count' => (int) ($validated['view_count'] ?? 0),
             'sort_order' => $sortOrder,
-            'created_at' => now(),
+            'created_at' => !empty($validated['created_at'])
+                ? Carbon::parse($validated['created_at'])
+                : now(),
             'updated_at' => now()
         ];
     }
@@ -341,6 +343,10 @@ class BoardPostService
             'thumbnail' => $this->handleThumbnail($request, $slug),
             'attachments' => json_encode($this->handleAttachments($request, $slug)),
             'custom_fields' => $this->getCustomFieldsJson($request, $board),
+            'created_at' => !empty($validated['created_at'])
+                ? Carbon::parse($validated['created_at'])
+                : ($existingPost->created_at ?? now()),
+            'view_count' => (int) ($validated['view_count'] ?? ($existingPost->view_count ?? 0)),
             'sort_order' => $request->input('sort_order', 0),
             'updated_at' => now()
         ];

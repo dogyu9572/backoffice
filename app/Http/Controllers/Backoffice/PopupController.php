@@ -75,9 +75,9 @@ class PopupController extends Controller
     {
         $request->validate([
             'title' => 'required|string|max:255',
-            'use_period' => 'boolean',
-            'start_date' => 'nullable|date',
-            'end_date' => 'nullable|date|after:start_date',
+            'use_period' => 'nullable|boolean',
+            'start_date' => 'nullable|required_if:use_period,1|date',
+            'end_date' => 'nullable|required_if:use_period,1|date|after_or_equal:start_date',
             'width' => 'nullable|numeric|min:100|max:2000',
             'height' => 'nullable|numeric|min:100|max:2000',
             'position_top' => 'nullable|numeric|min:0',
@@ -93,6 +93,7 @@ class PopupController extends Controller
         ]);
 
         $data = $request->all();
+        $data['use_period'] = $request->boolean('use_period');
         
         // 이미지 업로드 처리
         if ($request->hasFile('popup_image')) {
@@ -140,9 +141,9 @@ class PopupController extends Controller
     {
         $request->validate([
             'title' => 'required|string|max:255',
-            'use_period' => 'boolean',
-            'start_date' => 'nullable|date',
-            'end_date' => 'nullable|date|after:start_date',
+            'use_period' => 'nullable|boolean',
+            'start_date' => 'nullable|required_if:use_period,1|date',
+            'end_date' => 'nullable|required_if:use_period,1|date|after_or_equal:start_date',
             'width' => 'nullable|numeric|min:100|max:2000',
             'height' => 'nullable|numeric|min:100|max:2000',
             'position_top' => 'nullable|numeric|min:0',
@@ -158,6 +159,7 @@ class PopupController extends Controller
         ]);
 
         $data = $request->all();
+        $data['use_period'] = $request->boolean('use_period');
         
         // 이미지 업로드 처리
         if ($request->hasFile('popup_image')) {

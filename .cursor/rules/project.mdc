@@ -7,6 +7,8 @@ alwaysApply: false
 
 프로젝트 규칙은 기능별 파일로 분리되었습니다.
 
+기준 문서: `rules/README.md`
+
 - `00-global-principles.mdc`
 - `10-laravel-architecture.mdc`
 - `20-blade-and-assets.mdc`
@@ -14,7 +16,11 @@ alwaysApply: false
 - `26-backoffice-naming-and-shared-crud.mdc`
 - `27-change-preflight-checklist.mdc`
 - `28-collaboration-ambiguity-gate.mdc`
+- `29-subagent-orchestration-policy.mdc`
 - `30-migrations-policy.mdc`
 - `40-dev-environment-ops.mdc`
 
 새 규칙은 중복/충돌 제거를 위해 위 파일에서만 관리합니다.
+
+## 운영 원칙
+- 이 파일은 호환성 안내 전용이며, 신규 규칙을 직접 추가하지 않는다.

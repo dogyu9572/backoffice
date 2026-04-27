@@ -7,9 +7,12 @@
 @endsection
 
 @section('content')
+@php
+    $returnUrl = request('return_url', route('backoffice.board-posts.index', $board->slug ?? 'notice'));
+@endphp
 <div class="board-container">
     <div class="board-header">
-        <a href="{{ route('backoffice.board-posts.index', $board->slug ?? 'notice') }}" class="btn btn-secondary btn-sm">
+        <a href="{{ $returnUrl }}" class="btn btn-secondary btn-sm">
             <i class="fas fa-arrow-left"></i> 목록으로
         </a>
     </div>
@@ -29,6 +32,7 @@
             <form action="{{ route('backoffice.board-posts.update', [$board->slug ?? 'notice', $post->id]) }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
+                <input type="hidden" name="return_url" value="{{ $returnUrl }}">
 
                 @if($board->isNoticeEnabled())
                 <div class="board-form-group">
@@ -107,6 +111,7 @@
                     <small class="board-form-text">숫자가 작을수록 위에 표시됩니다. (0이면 자동 정렬)</small>
                 </div>
                 @endif
+
 
                 <!-- 커스텀 필드 입력 폼 -->
                 @if($board->custom_fields_config && count($board->custom_fields_config) > 0)
@@ -364,11 +369,21 @@
                 </div>
                 @endif
 
+                <div class="board-form-group">
+                    <label for="created_at" class="board-form-label">등록일시</label>
+                    <input type="datetime-local" class="board-form-control" id="created_at" name="created_at" value="{{ old('created_at', ($post->created_at ? \Illuminate\Support\Carbon::parse($post->created_at)->format('Y-m-d\TH:i') : now()->format('Y-m-d\TH:i'))) }}">
+                </div>
+
+                <div class="board-form-group">
+                    <label for="view_count" class="board-form-label">조회수</label>
+                    <input type="number" class="board-form-control" id="view_count" name="view_count" value="{{ old('view_count', $post->view_count ?? 0) }}" min="0">
+                </div>
+
                 <div class="board-form-actions">
                     <button type="submit" class="btn btn-primary">
                         <i class="fas fa-save"></i> 수정
                     </button>
-                    <a href="{{ route('backoffice.board-posts.index', $board->slug ?? 'notice') }}" class="btn btn-secondary">취소</a>
+                    <a href="{{ $returnUrl }}" class="btn btn-secondary">취소</a>
                 </div>
             </form>
         </div>

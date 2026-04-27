@@ -69,9 +69,9 @@ class BannerController extends Controller
             'sub_text' => 'nullable|string|max:255',
             'url' => 'nullable|url',
             'url_target' => 'nullable|in:_self,_blank',
-            'start_date' => 'nullable|date',
-            'end_date' => 'nullable|date|after_or_equal:start_date',
-            'use_period' => 'boolean',
+            'start_date' => 'nullable|required_if:use_period,1|date',
+            'end_date' => 'nullable|required_if:use_period,1|date|after_or_equal:start_date',
+            'use_period' => 'nullable|boolean',
             'is_active' => 'boolean',
             'desktop_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'mobile_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
@@ -80,6 +80,13 @@ class BannerController extends Controller
         ]);
 
         $data = $request->all();
+        $data['use_period'] = $request->boolean('use_period');
+
+        // 게시기간 미사용 시 저장된 기간 정보 제거
+        if (!$data['use_period']) {
+            $data['start_date'] = null;
+            $data['end_date'] = null;
+        }
         
         // 이미지 업로드 처리
         if ($request->hasFile('desktop_image')) {
@@ -123,9 +130,9 @@ class BannerController extends Controller
             'sub_text' => 'nullable|string|max:255',
             'url' => 'nullable|url',
             'url_target' => 'nullable|in:_self,_blank',
-            'start_date' => 'nullable|date',
-            'end_date' => 'nullable|date|after_or_equal:start_date',
-            'use_period' => 'boolean',
+            'start_date' => 'nullable|required_if:use_period,1|date',
+            'end_date' => 'nullable|required_if:use_period,1|date|after_or_equal:start_date',
+            'use_period' => 'nullable|boolean',
             'is_active' => 'boolean',
             'desktop_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'mobile_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
@@ -134,6 +141,13 @@ class BannerController extends Controller
         ]);
 
         $data = $request->all();
+        $data['use_period'] = $request->boolean('use_period');
+
+        // 게시기간 미사용 시 기존 기간 데이터 제거
+        if (!$data['use_period']) {
+            $data['start_date'] = null;
+            $data['end_date'] = null;
+        }
         
         // 이미지 제거 처리
         if ($request->input('remove_desktop_image') == '1') {

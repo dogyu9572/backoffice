@@ -31,13 +31,30 @@ document.addEventListener('DOMContentLoaded', function() {
     // 게시기간 토글 기능
     const usePeriodCheckbox = document.getElementById('use_period');
     const periodFields = document.getElementById('period_fields');
+    const startDateInput = document.getElementById('start_date');
+    const endDateInput = document.getElementById('end_date');
 
     function togglePeriodFields() {
         if (usePeriodCheckbox && periodFields) {
             if (usePeriodCheckbox.checked) {
                 periodFields.style.display = 'block';
+                if (startDateInput) {
+                    startDateInput.required = true;
+                }
+                if (endDateInput) {
+                    endDateInput.required = true;
+                }
             } else {
                 periodFields.style.display = 'none';
+                // 게시기간 해제 시 입력 데이터 즉시 제거
+                if (startDateInput) {
+                    startDateInput.value = '';
+                    startDateInput.required = false;
+                }
+                if (endDateInput) {
+                    endDateInput.value = '';
+                    endDateInput.required = false;
+                }
             }
         }
     }
